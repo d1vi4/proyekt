@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!hoursEl || !minutesEl || !secondsEl) return;
 
-    let duration = 14400; // 4 saat
+    let duration = 14400; //githuba update ucun komment elxan cool man terefinden
 
     function updateTimer() {
         const h = Math.floor(duration / 3600);

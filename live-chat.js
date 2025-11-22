@@ -2,7 +2,7 @@ const NAMES = [
     "Ali", "Leyla", "Mammad", "Gunel", "Rashad", "Nigar", "Orkhan", 
     "Aysel", "Farid", "Sevinj", "Elvin", "Zahra", "Murad", "Fidan"
 ];
-
+//githuba update ucun komment elxan cool man terefinden
 const ACTIONS = [
     { text: "just bought iPhone 14 Pro", icon: "fas fa-shopping-bag", color: "text-blue-500" },
     { text: "won 50 ₼ in Wheel of Fortune", icon: "fas fa-dharmachakra", color: "text-yellow-500" },

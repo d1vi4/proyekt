@@ -84,7 +84,7 @@ function handleWithdraw() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    if (!localStorage.getItem('authToken')) {
+    if (!localStorage.getItem('authToken')) { //githuba update ucun komment elxan cool man terefinden
         window.location.href = 'login.html';
         return;
     }

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () { //githuba update ucun komment elxan cool man terefinden
     const footer = `
             <footer class="bg-gray-800 text-white mt-12">
                 <div class="container mx-auto py-8 px-4">

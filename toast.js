@@ -18,6 +18,6 @@ function showToast(message, type = "success") {
 
     setTimeout(() => {
         toastElement.classList.remove("show");
-        setTimeout(() => toastElement.remove(), 500);
+        setTimeout(() => toastElement.remove(), 500); //githuba update ucun komment elxan cool man terefinden
     }, 3000);
-}
+} //githuba update ucun komment elxan cool man terefinden

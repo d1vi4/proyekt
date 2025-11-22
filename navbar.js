@@ -165,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
               </div>
           `;
   
-      document.getElementById("logout").addEventListener("click", function () {
+      document.getElementById("logout").addEventListener("click", function () { //githuba update ucun komment elxan cool man terefinden
         localStorage.removeItem("loggedInUser");
         window.location.href = "login.html";
       });

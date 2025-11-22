@@ -7,7 +7,7 @@ function showNotification(elementId, message) {
   element.classList.add("scale-100");
 
   setTimeout(() => {
-    closeNotification(elementId);
+    closeNotification(elementId); //githuba update ucun komment elxan cool man terefinden
   }, 5000);
 }
 

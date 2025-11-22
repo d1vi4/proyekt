@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         })
         .catch((error) => {
-          showNotification("error-alert", "Connection error occurred");
+          showNotification("error-alert", "Connection error occurred"); //githuba update ucun komment elxan cool man terefinden
         });
     }
   });

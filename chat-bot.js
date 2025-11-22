@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function () { //githuba update ucun komment elxan cool man terefinden
     const chatStyles = document.createElement("style");
     chatStyles.innerHTML = `
         #chatbot-btn {
