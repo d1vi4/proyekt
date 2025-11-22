@@ -27,7 +27,6 @@ document.addEventListener("DOMContentLoaded", function () {
                                 <i class="fas fa-cube mr-1"></i>Mystery Box
                               </a>
                               <a href="shop.html" class="px-3 py-2 hover:text-blue-600 nav-link">Shop</a>
-                              <a href="tracking.html" class="px-3 py-2 hover:text-blue-600 nav-link">Tracking</a>
                           </div>
                           
                           <div class="relative mx-2">
@@ -47,7 +46,6 @@ document.addEventListener("DOMContentLoaded", function () {
                           <a href="index.html" class="block px-3 py-2 nav-link">Home</a>
                           <a href="mystery-box.html" class="block px-3 py-2 nav-link">Mystery Box</a>
                           <a href="shop.html" class="block px-3 py-2 nav-link">Shop</a>
-                          <a href="tracking.html" class="block px-3 py-2 nav-link">Tracking</a>
                           <div class="pt-4">
                               ${authButton}
                           </div>
@@ -65,9 +63,11 @@ document.addEventListener("DOMContentLoaded", function () {
         menu.classList.toggle("hidden");
     });
   
+    // --- MATRIX MODE LOGIC ---
     const toggleBtn = document.getElementById("matrix-toggle");
     const styleTag = document.getElementById("matrix-style");
     
+
     if (localStorage.getItem("matrixMode") === "true") {
         enableMatrixMode();
     }
@@ -119,6 +119,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 color: #00FF00 !important;
                 border-color: #00FF00 !important;
             }
+            /* Wheel specific fixes */
             #wheel-container canvas {
                 filter: hue-rotate(90deg) brightness(1.5);
             }
@@ -165,7 +166,7 @@ document.addEventListener("DOMContentLoaded", function () {
               </div>
           `;
   
-      document.getElementById("logout").addEventListener("click", function () { //githuba update ucun komment elxan cool man terefinden
+      document.getElementById("logout").addEventListener("click", function () {
         localStorage.removeItem("loggedInUser");
         window.location.href = "login.html";
       });
