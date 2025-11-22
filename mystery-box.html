@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mystery Box - E-commerce</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <style>
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        .shake-box {
+            animation: shake 0.5s;
+            animation-iteration-count: infinite;
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 20px rgba(79, 70, 229, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex flex-col min-h-screen">
+    <div id="navbar-placeholder"></div>
+
+    <div class="container mx-auto px-4 py-12 flex-grow">
+        <div class="text-center mb-12">
+            <h2 class="text-4xl font-extrabold mb-4 text-indigo-900" id="page-title">Mystery Boxes</h2>
+            <p class="text-gray-600 text-lg">Spend your balance to win exclusive items or jackpot cash! <br>Items are added directly to your cart.</p>
+            <div class="mt-4 inline-block bg-gray-100 px-6 py-2 rounded-full">
+                <span class="text-gray-600">Your Balance:</span>
+                <span id="box-balance" class="font-bold text-2xl text-indigo-600 ml-2">0.00 ₼</span>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-4xl mx-auto">
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 transform transition hover:scale-105 glow-hover">
+                <div class="bg-gradient-to-r from-blue-500 to-indigo-600 p-6 text-center">
+                    <i class="fas fa-cube text-6xl text-white mb-4"></i>
+                    <h3 class="text-2xl font-bold text-white">STANDARD BOX</h3>
+                    <p class="text-blue-100">Accessories, Cables & Small Tech</p>
+                </div>
+                <div class="p-8 text-center">
+                    <ul class="text-gray-600 mb-6 text-sm space-y-2">
+                        <li><i class="fas fa-check text-green-500 mr-2"></i> Win up to 50 ₼ Cash</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i> Headphones, Cases, Cables</li>
+                        <li><i class="fas fa-check text-green-500 mr-2"></i> Chance for Smart Watch</li>
+                    </ul>
+                    <button onclick="openBox('standard')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-6 rounded-xl text-xl transition shadow-lg">
+                        OPEN FOR 20 ₼
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-yellow-200 transform transition hover:scale-105 glow-hover">
+                <div class="bg-gradient-to-r from-yellow-500 to-red-500 p-6 text-center">
+                    <i class="fas fa-gem text-6xl text-white mb-4"></i>
+                    <h3 class="text-2xl font-bold text-white">PREMIUM BOX</h3>
+                    <p class="text-yellow-100">Phones, Laptops & High-End Tech</p>
+                </div>
+                <div class="p-8 text-center">
+                    <ul class="text-gray-600 mb-6 text-sm space-y-2">
+                        <li><i class="fas fa-star text-yellow-500 mr-2"></i> Win up to 300 ₼ Cash</li>
+                        <li><i class="fas fa-star text-yellow-500 mr-2"></i> Gaming Gear, Keyboards</li>
+                        <li><i class="fas fa-star text-yellow-500 mr-2"></i> JACKPOT: iPhone / Laptop</li>
+                    </ul>
+                    <button onclick="openBox('premium')" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 px-6 rounded-xl text-xl transition shadow-lg">
+                        OPEN FOR 100 ₼
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="reward-modal" class="fixed inset-0 bg-black bg-opacity-80 hidden flex justify-center items-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center relative animate-bounce-in">
+            <div id="modal-icon" class="text-6xl mb-4">📦</div>
+            <h3 class="text-2xl font-bold mb-2 text-gray-800" id="reward-title">Opening...</h3>
+            <p class="text-gray-600 mb-6" id="reward-desc">Please wait</p>
+            <div id="reward-image-container" class="mb-6 hidden">
+                <img id="reward-image" src="" class="w-32 h-32 object-contain mx-auto rounded-lg border">
+            </div>
+            <button onclick="closeModal()" class="bg-indigo-600 text-white px-6 py-2 rounded-full font-bold hover:bg-indigo-700 transition">
+                AWESOME!
+            </button>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="navbar.js"></script>
+    <script src="footer.js"></script>
+
+    <script>
+        const STANDARD_ITEMS = [
+            { type: 'item', name: 'USB Cable', price: 10, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQuqdC99uuX35ulzFgRUd0iZY6w-KN2jNov8g&s', chance: 40 },
+            { type: 'item', name: 'Phone Case', price: 15, image: 'https://sfycdn.speedsize.com/19464703-36eb-4c15-80b7-604735fdf8c8/eu.mous.co/cdn/shop/files/Marbled-Blue-i16_Pro-Perspective_ef912185-be2f-4698-9952-97ff097ac3fa.jpg?v=1741742045&width=650', chance: 30 },
+            { type: 'item', name: 'Wired Earphones', price: 25, image: 'https://m.media-amazon.com/images/I/61iFeb5BqBL.jpg', chance: 20 },
+            { type: 'cash', amount: 10, chance: 20 },
+            { type: 'cash', amount: 50, chance: 5 },
+            { type: 'item', name: 'Smart Band', price: 60, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQo8ZnyG0iIxFVZVcEkh1YnteFmjNucL-ns_Q&s', chance: 5 }
+        ];
+
+        const PREMIUM_ITEMS = [
+            { type: 'item', name: 'Gaming Mouse', price: 80, image: 'https://www.maxgaming.com/bilder/artiklar/zoom/22269_1.jpg?m=1661864590', chance: 40 },
+            { type: 'item', name: 'Mechanical Keyboard', price: 120, image: 'https://media.wired.com/photos/65b0438c22aa647640de5c75/3:2/w_2560%2Cc_limit/Mechanical-Keyboard-Guide-Gear-GettyImages-1313504623.jpg', chance: 30 },
+            { type: 'cash', amount: 50, chance: 30 },
+            { type: 'cash', amount: 200, chance: 10 },
+            { type: 'item', name: 'Gaming Monitor', price: 400, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSM_U9uuNhPF-jakTx36PXU7Hv4RNOxA5VJjg&s', chance: 5 }, // Rare
+            { type: 'item', name: 'iPhone 14', price: 2000, image: 'https://cdn.new-brz.net/app/public/models/MQ9X3YC-A/small/j/240905160018902246.jpg', chance: 1 }
+        ];
+
+        function updateBalanceDisplay() {
+            const balance = parseFloat(localStorage.getItem("userBalance")) || 0;
+            document.getElementById("box-balance").innerText = balance.toFixed(2) + " ₼";
+        }
+
+        function addTransaction(type, amount) {
+            const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            const newTx = {
+                id: Date.now(),
+                type: type,
+                amount: amount,
+                date: new Date().toLocaleString('az-AZ')
+            };
+            transactions.unshift(newTx);
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+        }
+
+        function getRandomPrize(pool) {
+            const totalChance = pool.reduce((acc, item) => acc + item.chance, 0);
+            let random = Math.random() * totalChance;
+            
+            for (let item of pool) {
+                if (random < item.chance) {
+                    return item;
+                }
+                random -= item.chance;
+            }
+            return pool[0];
+        }
+
+        function openBox(type) {
+            let cost = type === 'standard' ? 20 : 100;
+            let pool = type === 'standard' ? STANDARD_ITEMS : PREMIUM_ITEMS;
+            let balance = parseFloat(localStorage.getItem("userBalance")) || 0;
+
+            if (balance < cost) {
+                alert("Insufficient balance!");
+                return;
+            }
+
+
+            balance -= cost;
+            localStorage.setItem("userBalance", balance);
+            updateBalanceDisplay();
+            addTransaction(`Bought ${type} box`, -cost);
+
+
+            const modal = document.getElementById('reward-modal');
+            const title = document.getElementById('reward-title');
+            const desc = document.getElementById('reward-desc');
+            const icon = document.getElementById('modal-icon');
+            const imgContainer = document.getElementById('reward-image-container');
+            const img = document.getElementById('reward-image');
+
+            modal.classList.remove('hidden');
+            icon.classList.add('shake-box');
+            title.innerText = "Opening...";
+            desc.innerText = "Good luck!";
+            imgContainer.classList.add('hidden');
+            icon.innerText = "📦";
+
+            setTimeout(() => {
+                icon.classList.remove('shake-box');
+                const prize = getRandomPrize(pool);
+
+                if (prize.type === 'cash') {
+                    balance += prize.amount;
+                    localStorage.setItem("userBalance", balance);
+                    addTransaction("Box Win (Cash)", prize.amount);
+                    
+                    icon.innerText = "💰";
+                    title.innerText = "YOU WON CASH!";
+                    desc.innerText = `+${prize.amount} ₼ added to your wallet.`;
+                    updateBalanceDisplay();
+                } else {
+
+                    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+                    const product = {
+                        id: Date.now(),
+                        brand: "Mystery Prize",
+                        model: prize.name,
+                        price: 0,
+                        imageUrl: prize.image,
+                        quantity: 1
+                    };
+                    cart.push(product);
+                    localStorage.setItem("cart", JSON.stringify(cart));
+
+                    icon.innerText = "🎉";
+                    title.innerText = prize.name;
+                    desc.innerText = `Estimated Value: ${prize.price} ₼. Added to your cart!`;
+                    img.src = prize.image;
+                    imgContainer.classList.remove('hidden');
+                }
+            }, 2000);
+        }
+
+        function closeModal() {
+            document.getElementById('reward-modal').classList.add('hidden');
+        }
+
+        document.addEventListener("DOMContentLoaded", updateBalanceDisplay);
+    </script>
+</body>
+</html>

@@ -4,48 +4,72 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile - E-commerce</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
   </head>
   <body class="bg-gray-50">
     <div id="navbar-placeholder"></div>
 
-    <div class="flex justify-center items-center min-h-screen flex-col px-4">
-      <button
-        id="my-products"
-        class="bg-red-600 hover:bg-red-700 text-white px-4 py-3 rounded-md shadow-sm mb-6 transition duration-300"
-      >
-        My products for sale
-      </button>
+    <div class="container mx-auto px-4 py-12 max-w-5xl">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="md:col-span-1">
+            <div class="bg-white p-6 rounded-xl shadow-lg text-center">
+                <div class="w-24 h-24 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl font-bold text-indigo-600">
+                    <i class="fas fa-user"></i>
+                </div>
+                <h3 class="text-xl font-bold" id="user-username">Username</h3>
+                <p class="text-gray-500 text-sm" id="user-email">user@example.com</p>
+                
+                <hr class="my-6 border-gray-100">
+                
+                <button id="my-products" class="w-full bg-white border border-indigo-600 text-indigo-600 hover:bg-indigo-50 py-2 px-4 rounded-lg transition mb-3">
+                    My Products for Sale
+                </button>
+            </div>
+        </div>
 
-      <div class="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
-        <h3 class="text-xl font-bold text-red-600 mb-4">User Details</h3>
+        <div class="md:col-span-2 space-y-6">
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <h3 class="text-xl font-bold text-indigo-900 mb-6 border-b pb-2">Personal Information</h3>
+                <div class="grid grid-cols-2 gap-6">
+                    <div>
+                        <span class="text-gray-500 text-sm block">Name</span>
+                        <span class="font-medium text-gray-800" id="user-name">--</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-500 text-sm block">Surname</span>
+                        <span class="font-medium text-gray-800" id="user-surname">--</span>
+                    </div>
+                </div>
+            </div>
 
-        <div class="space-y-3">
-          <p class="text-gray-800">
-            <span class="font-semibold">Name:</span>
-            <span id="user-name"></span>
-          </p>
-          <p class="text-gray-800">
-            <span class="font-semibold">Surname:</span>
-            <span id="user-surname"></span>
-          </p>
-          <p class="text-gray-800">
-            <span class="font-semibold">Email:</span>
-            <span id="user-email"></span>
-          </p>
-          <p class="text-gray-800">
-            <span class="font-semibold">Username:</span>
-            <span id="user-username"></span>
-          </p>
+            <div class="bg-white p-8 rounded-xl shadow-lg">
+                <h3 class="text-xl font-bold text-indigo-900 mb-6 border-b pb-2">My Order History</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="text-gray-500 text-sm border-b">
+                                <th class="pb-3">Order ID</th>
+                                <th class="pb-3">Date</th>
+                                <th class="pb-3">Total</th>
+                                <th class="pb-3">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="orders-list" class="text-gray-700">
+                            </tbody>
+                    </table>
+                    <div id="no-orders" class="hidden text-center py-4 text-gray-400 text-sm">No orders found.</div>
+                </div>
+            </div>
         </div>
       </div>
     </div>
 
+    <script src="navbar.js"></script>
+    <script src="footer.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         let user = JSON.parse(localStorage.getItem("loggedInUser"));
-
         if (!user) {
           window.location.href = "login.html";
           return;
@@ -56,18 +80,39 @@
         document.getElementById("user-email").innerText = user.email;
         document.getElementById("user-username").innerText = user.username;
 
-        document
-          .getElementById("my-products")
-          .addEventListener("click", function () {
+        document.getElementById("my-products").addEventListener("click", function () {
             window.location.href = "my-products.html";
-          });
+        });
+
+        // Load Order History
+        const ordersList = document.getElementById("orders-list");
+        const noOrders = document.getElementById("no-orders");
+        const myOrders = JSON.parse(localStorage.getItem("myOrders_" + user.username)) || [];
+
+        if (myOrders.length === 0) {
+            noOrders.classList.remove("hidden");
+        } else {
+            myOrders.forEach(order => {
+                const date = new Date(order.date).toLocaleDateString();
+                const row = document.createElement("tr");
+                row.className = "border-b last:border-0 hover:bg-gray-50 transition";
+                row.innerHTML = `
+                    <td class="py-4 font-mono font-bold text-indigo-600">${order.id}</td>
+                    <td class="py-4 text-sm">${date}</td>
+                    <td class="py-4 font-bold">${order.total.toFixed(2)} ₼</td>
+                    <td class="py-4">
+                        <button onclick="copyId('${order.id}')" class="text-xs bg-gray-200 hover:bg-gray-300 px-2 py-1 rounded text-gray-700">Copy ID</button>
+                        <a href="tracking.html" class="text-xs bg-indigo-100 text-indigo-700 px-2 py-1 rounded hover:bg-indigo-200 ml-1">Track</a>
+                    </td>
+                `;
+                ordersList.appendChild(row);
+            });
+        }
+
+        window.copyId = function(id) {
+            navigator.clipboard.writeText(id).then(() => alert("Order ID copied: " + id));
+        }
       });
     </script>
-
-    <script
-      src="https://kit.fontawesome.com/558b0d9e50.js"
-      crossorigin="anonymous"
-    ></script>
-    <script src="navbar.js"></script>
   </body>
 </html>

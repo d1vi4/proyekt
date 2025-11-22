@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction History - E-commerce</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+    <div id="navbar-placeholder"></div>
+
+    <div class="container mx-auto px-4 py-12 flex-grow max-w-4xl">
+        <h2 class="text-3xl font-bold mb-8 text-gray-800 border-b pb-4">Transaction History</h2>
+
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-600 uppercase">Date</th>
+                            <th class="px-6 py-4 text-left text-sm font-bold text-gray-600 uppercase">Type</th>
+                            <th class="px-6 py-4 text-right text-sm font-bold text-gray-600 uppercase">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody id="transaction-body" class="divide-y divide-gray-200">
+                    </tbody>
+                </table>
+            </div>
+            <div id="no-transactions" class="hidden p-8 text-center text-gray-500">
+                No transactions found.
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="navbar.js"></script>
+    <script src="footer.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const txBody = document.getElementById('transaction-body');
+            const noTx = document.getElementById('no-transactions');
+            const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+
+            if (transactions.length === 0) {
+                noTx.classList.remove('hidden');
+            } else {
+                transactions.forEach(tx => {
+                    const row = document.createElement('tr');
+                    const isPositive = tx.amount > 0;
+                    const amountClass = isPositive ? 'text-green-600' : 'text-red-600';
+                    const sign = isPositive ? '+' : '';
+
+                    let icon = '';
+                    if (tx.type === 'Deposit') icon = '<i class="fas fa-arrow-down text-blue-500 mr-2"></i>';
+                    else if (tx.type === 'Withdraw') icon = '<i class="fas fa-arrow-up text-orange-500 mr-2"></i>';
+                    else if (tx.type === 'Purchase') icon = '<i class="fas fa-shopping-bag text-gray-500 mr-2"></i>';
+                    else if (tx.type === 'Cashback') icon = '<i class="fas fa-gift text-purple-500 mr-2"></i>';
+
+                    row.innerHTML = `
+                        <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">${tx.date}</td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap">${icon} ${tx.type}</td>
+                        <td class="px-6 py-4 text-sm font-bold text-right whitespace-nowrap ${amountClass}">${sign}${parseFloat(tx.amount).toFixed(2)} ₼</td>
+                    `;
+                    txBody.appendChild(row);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

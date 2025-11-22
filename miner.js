@@ -3,6 +3,18 @@ let coinBalance = parseFloat(localStorage.getItem('minerCoins')) || 0;
 const AZN_RATE = 1; 
 const MINING_RATE_PER_MS = 0.00001; 
 
+function addTransaction(type, amount) {
+    const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+    const newTx = {
+        id: Date.now(),
+        type: type,
+        amount: amount,
+        date: new Date().toLocaleString('az-AZ')
+    };
+    transactions.unshift(newTx);
+    localStorage.setItem('transactions', JSON.stringify(transactions));
+}
+
 function updateDisplay() {
     const formattedCoins = coinBalance.toFixed(7);
     document.getElementById('coin-balance-display').innerText = formattedCoins;
@@ -64,6 +76,8 @@ function handleWithdraw() {
     const coinsDeducted = withdrawableAZN / AZN_RATE;
     coinBalance -= coinsDeducted;
     localStorage.setItem('minerCoins', coinBalance);
+    
+    addTransaction("Deposit (Miner)", withdrawableAZN);
 
     alert(`Successfully withdrew ${withdrawableAZN} ₼! New wallet balance: ${userBalance.toFixed(2)} ₼.`);
     updateDisplay();
@@ -81,4 +95,4 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('withdraw-btn').addEventListener('click', handleWithdraw);
     
     window.addEventListener('beforeunload', stopMining);
-}); 
+});

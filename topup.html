@@ -61,6 +61,18 @@
         let balance = parseFloat(localStorage.getItem("userBalance")) || 0;
         document.getElementById("current-balance-display").innerText = balance.toFixed(2) + " ₼";
 
+        function addTransaction(type, amount) {
+            const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            const newTx = {
+                id: Date.now(),
+                type: type,
+                amount: amount,
+                date: new Date().toLocaleString('az-AZ')
+            };
+            transactions.unshift(newTx);
+            localStorage.setItem('transactions', JSON.stringify(transactions));
+        }
+
         document.getElementById("topup-form").addEventListener("submit", function(e) {
             e.preventDefault();
             
@@ -71,6 +83,7 @@
                 let newBalance = currentBalance + amount;
                 
                 localStorage.setItem("userBalance", newBalance);
+                addTransaction("Deposit (Card)", amount);
                 
                 alert(`Successfully added ${amount} ₼! New balance: ${newBalance.toFixed(2)} ₼`);
                 window.location.href = "index.html"; 
