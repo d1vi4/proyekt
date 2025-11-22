@@ -64,9 +64,20 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   
     let user = JSON.parse(localStorage.getItem("loggedInUser"));
+    
+    let balance = parseFloat(localStorage.getItem("userBalance")) || 0;
+
     if (user) {
       document.getElementById("user-section").innerHTML = `
               <div class="flex items-center">
+                  <a href="miner.html" class="px-3 py-2 mr-2 text-indigo-600 hover:text-indigo-800" title="Go to Crypto Miner">
+                      <i class="fas fa-microchip"></i>
+                  </a>
+
+                  <a href="topup.html" class="px-3 py-2 mr-2 text-green-600 font-bold border border-green-200 rounded hover:bg-green-50 transition" title="Пополнить кошелек">
+                      <i class="fas fa-wallet"></i> ${balance.toFixed(2)} ₼
+                  </a>
+
                   <a href="cart.html" class="px-3 py-2 mr-2">
                       <i class="fas fa-shopping-cart"></i>
                   </a>
@@ -84,4 +95,4 @@ document.addEventListener("DOMContentLoaded", function () {
         window.location.href = "login.html";
       });
     }
-  });
+});

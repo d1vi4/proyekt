@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="az">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Crypto Miner - E-commerce</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+  </head>
+  <body class="bg-gray-50 flex flex-col min-h-screen">
+    <div id="navbar-placeholder"></div>
+
+    <div class="container mx-auto px-4 py-12 flex-grow max-w-4xl">
+      <h2 class="text-3xl font-bold text-center mb-8 text-indigo-600">
+        <i class="fas fa-microchip mr-2"></i> Simulated Crypto Miner
+      </h2>
+
+      <div class="bg-white p-8 rounded-2xl shadow-xl border border-gray-100 space-y-6">
+        
+        <div class="text-center p-6 bg-gray-100 rounded-lg">
+          <p class="text-sm font-semibold text-gray-600 uppercase tracking-wider mb-2">Current Mining Balance</p>
+          <div class="text-4xl font-mono font-extrabold text-gray-800">
+            <span id="coin-balance-display">0.0000000</span> Coins
+          </div>
+          <p class="mt-2 text-sm text-gray-500">Rate: 0.01 Coins per second (1 Coin = 1 ₼)</p>
+        </div>
+
+        <div class="flex justify-center space-x-4">
+          <button
+            id="start-btn"
+            class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-xl font-semibold shadow-md transition duration-300 flex items-center"
+          >
+            <i class="fas fa-play-circle mr-2"></i> Start Mining
+          </button>
+        </div>
+
+        <hr class="border-gray-200">
+
+        <div class="text-center p-6 bg-red-50 rounded-lg border border-red-200">
+          <p class="text-sm font-semibold text-red-700 uppercase tracking-wider mb-2">Available for Withdrawal (AZN)</p>
+          <div class="text-3xl font-extrabold text-red-800">
+            <span id="azn-display">0</span> ₼
+          </div>
+          <p class="mt-2 text-xs text-red-600">Minimum withdrawal: 15 ₼. Only whole numbers are transferred to your wallet.</p>
+        </div>
+
+        <div class="flex justify-center">
+            <button
+              id="withdraw-btn"
+              disabled
+              class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-xl font-semibold shadow-md transition duration-300 flex items-center opacity-50 disabled:cursor-not-allowed"
+            >
+              <i class="fas fa-piggy-bank mr-2"></i> Withdraw to Wallet
+            </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="navbar.js"></script>
+    <script src="miner.js"></script>
+  </body>
+</html>
