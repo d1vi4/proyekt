@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="az">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile - E-commerce</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-50">
+    <div id="navbar-placeholder"></div>
+
+    <div class="flex justify-center items-center min-h-screen flex-col px-4">
+      <button
+        id="my-products"
+        class="bg-red-600 hover:bg-red-700 text-white px-4 py-3 rounded-md shadow-sm mb-6 transition duration-300"
+      >
+        My products for sale
+      </button>
+
+      <div class="bg-white p-8 rounded-lg shadow-md max-w-lg w-full">
+        <h3 class="text-xl font-bold text-red-600 mb-4">User Details</h3>
+
+        <div class="space-y-3">
+          <p class="text-gray-800">
+            <span class="font-semibold">Name:</span>
+            <span id="user-name"></span>
+          </p>
+          <p class="text-gray-800">
+            <span class="font-semibold">Surname:</span>
+            <span id="user-surname"></span>
+          </p>
+          <p class="text-gray-800">
+            <span class="font-semibold">Email:</span>
+            <span id="user-email"></span>
+          </p>
+          <p class="text-gray-800">
+            <span class="font-semibold">Username:</span>
+            <span id="user-username"></span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        let user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+        if (!user) {
+          window.location.href = "login.html";
+          return;
+        }
+
+        document.getElementById("user-name").innerText = user.name;
+        document.getElementById("user-surname").innerText = user.surname;
+        document.getElementById("user-email").innerText = user.email;
+        document.getElementById("user-username").innerText = user.username;
+
+        document
+          .getElementById("my-products")
+          .addEventListener("click", function () {
+            window.location.href = "my-products.html";
+          });
+      });
+    </script>
+
+    <script
+      src="https://kit.fontawesome.com/558b0d9e50.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="navbar.js"></script>
+  </body>
+</html>

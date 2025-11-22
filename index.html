@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="az">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home - E-commerce</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+      :root {
+        --primary-color: #6366f1;
+        --accent-color: #ef4444;
+        --text-dark: #111827; 
+        --text-body: #374151;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        color: var(--text-body);
+        background-color: #f9fafb;
+      }
+      h1, h2, h3, h4, h5 {
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-color);
+      }
+      .section-title {
+        border-left: 4px solid var(--accent-color);
+        padding-left: 15px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        font-size: 1.5rem;
+        color: var(--text-dark);
+        font-weight: 700;
+        margin-bottom: 3rem;
+      }
+
+      .carousel-container {
+        position: relative;
+        overflow: hidden;
+      }
+      .carousel-item {
+        display: none;
+        transition: opacity 1s ease-in-out;
+        opacity: 0;
+      }
+      .carousel-item.active {
+        display: block;
+        opacity: 1;
+      }
+      .carousel-item img {
+        filter: brightness(0.7);
+      }
+      .carousel-caption {
+        background: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.1));
+        padding: 2rem;
+        border-radius: 0.5rem;
+      }
+      .carousel-button {
+        background-color: rgba(255, 255, 255, 0.2);
+        color: white;
+        transition: background-color 0.3s;
+      }
+      .carousel-button:hover {
+        background-color: rgba(255, 255, 255, 0.4);
+      }
+
+      .collection-card, .feedback-card {
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+      }
+      .collection-card:hover, .feedback-card:hover {
+        transform: translateY(-5px) scale(1.02);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .product-shop-button {
+        background-color: var(--primary-color);
+      }
+      .product-shop-button:hover {
+        background-color: #4f46e5;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="navbar-placeholder"></div>
+
+    <div class="carousel-container relative max-w-7xl mx-auto mt-4 rounded-xl shadow-2xl overflow-hidden">
+      <div class="carousel-item active relative">
+        <img
+          src="https://wallpapercave.com/wp/wp8129423.jpg"
+          alt="MacBook Air M4 Promotion"
+          class="w-full h-[500px] object-cover"
+        />
+        <div class="absolute inset-0 flex items-center p-8 md:p-16">
+          <div class="carousel-caption text-white max-w-xl">
+            <h1 class="text-5xl font-extrabold mb-4">
+              Welcome To Our ECOMMERCE Shop!
+            </h1>
+            <p class="text-xl mb-6">
+              This shop by Elkhan Mardiyev --- If you liked this site, please rate it higher.           </p>
+            
+          </div>
+        </div>
+      </div>
+
+      <div class="carousel-item relative">
+        <img
+          src="https://cdn.wallpapersafari.com/42/34/w3xcOr.jpg"
+          alt="New Headphones"
+          class="w-full h-[500px] object-cover"
+        />
+        <div class="absolute inset-0 flex items-center p-8 md:p-16">
+          <div class="carousel-caption text-white max-w-xl">
+            <h1 class="text-5xl font-extrabold mb-4">
+              Never forget about discounts
+            </h1>
+            <p class="text-xl mb-6">
+              Don't forget about electronics BUY WITH - 40% DISCOUNT -
+            </p>
+        
+          </div>
+        </div>
+      </div>
+
+      <button
+        class="carousel-button absolute top-1/2 left-4 transform -translate-y-1/2 p-4 rounded-full text-2xl"
+        onclick="prevSlide()"
+      >
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      <button
+        class="carousel-button absolute top-1/2 right-4 transform -translate-y-1/2 p-4 rounded-full text-2xl"
+        onclick="nextSlide()"
+      >
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+
+    <div class="container mx-auto py-16 px-4 max-w-7xl">
+      <h2 class="section-title">Shop COLLECTION</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div
+          class="collection-card bg-white p-6 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl"
+        >
+          <img
+            src="https://i.etsystatic.com/41697743/r/il/76303d/5352062498/il_570xN.5352062498_hs12.jpg"
+            alt="New Apple MacBook"
+            class="w-full h-80 object-cover rounded-xl mb-4"
+          />
+          <h3 class="text-2xl font-bold mb-2 text-red-600">New Apple MacBook</h3>
+          <p class="text-gray-600 mb-4">
+            The newest generation of the most powerful and sleek MacBook Air M4
+            is here. Limited Stock.
+          </p>
+          <a
+            href="shop.html"
+            class="inline-block text-lg font-semibold text-indigo-600 hover:text-indigo-800 transition duration-300"
+            >Shop Now <i class="fas fa-arrow-right ml-1"></i
+          ></a>
+        </div>
+        <div
+          class="collection-card bg-white p-6 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl"
+        >
+          <img
+            src="https://cdn.thewirecutter.com/wp-content/media/2023/07/bluetoothheadphones-2048px-0876.jpg?auto=webp&quality=75&width=1024"
+            alt="Gaming Headphones"
+            class="w-full h-80 object-cover rounded-xl mb-4"
+          />
+          <h3 class="text-2xl font-bold mb-2 text-red-600">
+            Professional Gaming Headphones
+          </h3>
+          <p class="text-gray-600 mb-4">
+            Unbeatable comfort and precision audio for your competitive edge.
+          </p>
+          <a
+            href="shop.html"
+            class="inline-block text-lg font-semibold text-indigo-600 hover:text-indigo-800 transition duration-300"
+            >Explore Audio <i class="fas fa-arrow-right ml-1"></i
+          ></a>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mx-auto py-16 px-4 max-w-7xl">
+      <div
+        class="relative bg-gray-900 rounded-2xl p-10 md:p-20 text-white shadow-2xl overflow-hidden"
+      >
+        <div
+          class="absolute inset-0 bg-cover bg-center opacity-30"
+          style="
+            background-image: url('https://wallpapers.com/images/featured/minimalist-technology-98rdmn1yo3pi4c9f.jpg');
+          "
+        ></div>
+        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
+          <div class="mb-6 md:mb-0">
+            <h3 class="text-4xl font-extrabold mb-2 text-yellow-400">
+              SALE UP TO 40% OFF
+            </h3>
+            <p class="text-xl">
+              Don't miss out on our biggest savings event of the season!
+            </p>
+          </div>
+          <a
+            href="shop.html"
+            class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300"
+            >Shop All Deals</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="container mx-auto py-16 px-4 max-w-7xl">
+      <h2 class="section-title">Exclusive Offer</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center bg-white p-8 rounded-2xl shadow-xl">
+        <div class="text-center md:text-left">
+          <p class="text-red-600 font-bold text-lg mb-2">LIMITED EDITION</p>
+          <h3 class="text-4xl font-extrabold mb-4">iPhone 14 Pro Max</h3>
+          <p class="text-gray-600 mb-6">
+            Pro-level performance with a cinematic display. Get a free charging
+            dock with every purchase today!
+          </p>
+          <div class="flex items-center justify-center md:justify-start space-x-4 mb-6">
+            <span class="text-3xl font-bold text-gray-900">1299.99 ₼</span>
+            <span class="text-xl text-gray-400 line-through">1499.99 ₼</span>
+          </div>
+          <button
+            class="product-shop-button text-white py-3 px-10 rounded-full font-semibold hover:opacity-90 transition duration-300"
+          >
+            Add to Cart
+          </button>
+        </div>
+        <div>
+          <img
+            src="https://www.nsmart.com.tr/content/images/thumbs/75da5183-bca7-4e95-806a-00594cceb854_yenilenmi-apple-iphone-14-pro-max-128gb-gm-a-grade.jpeg"
+            alt="iPhone 14 Pro"
+            class="max-w-md w-full mx-auto rounded-lg shadow-2xl"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="container mx-auto py-16 px-4 max-w-7xl">
+      <h2 class="section-title">What Our Customers Say</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div class="feedback-card bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+          <div class="text-yellow-500 mb-3">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="text-gray-700 mb-4 italic">
+            "The service was incredibly fast and the quality of my new laptop is
+            exceptional. Highly recommend this store!"
+          </p>
+          <h5 class="font-bold text-sm text-red-600">Ayxan Məmmədov</h5>
+          <p class="text-xs text-gray-500">Verified Customer</p>
+        </div>
+        <div class="feedback-card bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+          <div class="text-yellow-500 mb-3">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+          </div>
+          <p class="text-gray-700 mb-4 italic">
+            "Great selection of products and the checkout process was smooth.
+            I will definitely be buying from here again."
+          </p>
+          <h5 class="font-bold text-sm text-red-600">Leyla Əliyeva</h5>
+          <p class="text-xs text-gray-500">Tech Enthusiast</p>
+        </div>
+        <div class="feedback-card bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+          <div class="text-yellow-500 mb-3">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="far fa-star"></i>
+          </div>
+          <p class="text-gray-700 mb-4 italic">
+            "I found exactly what I was looking for, and the customer support
+            was very helpful. Five stars!"
+          </p>
+          <h5 class="font-bold text-sm text-red-600">Nicat Quliyev</h5>
+          <p class="text-xs text-gray-500">First-Time Buyer</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mx-auto py-16 px-4 max-w-7xl">
+      <h2 class="section-title">Explore Our Categories</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="border border-gray-200 p-5 rounded-2xl text-center hover:border-indigo-300 transition-colors duration-300 bg-white shadow-sm hover:shadow-md">
+          <i class="fas fa-laptop text-4xl text-indigo-600 mb-4"></i>
+          <h5 class="text-lg font-semibold product-title">Laptops</h5>
+          <button
+            class="product-shop-button text-white py-2 px-6 rounded-lg mt-4 w-full"
+          >
+            Shop Now
+          </button>
+        </div>
+        <div class="border border-gray-200 p-5 rounded-2xl text-center hover:border-indigo-300 transition-colors duration-300 bg-white shadow-sm hover:shadow-md">
+          <i class="fas fa-mobile-alt text-4xl text-indigo-600 mb-4"></i>
+          <h5 class="text-lg font-semibold product-title">Smartphones</h5>
+          <button
+            class="product-shop-button text-white py-2 px-6 rounded-lg mt-4 w-full"
+          >
+            Shop Now
+          </button>
+        </div>
+        <div class="border border-gray-200 p-5 rounded-2xl text-center hover:border-indigo-300 transition-colors duration-300 bg-white shadow-sm hover:shadow-md">
+          <i class="fas fa-headphones-alt text-4xl text-indigo-600 mb-4"></i>
+          <h5 class="text-lg font-semibold product-title">Audio</h5>
+          <button
+            class="product-shop-button text-white py-2 px-6 rounded-lg mt-4 w-full"
+          >
+            Shop Now
+          </button>
+        </div>
+        <div class="border border-gray-200 p-5 rounded-2xl text-center hover:border-indigo-300 transition-colors duration-300 bg-white shadow-sm hover:shadow-md">
+          <i class="fas fa-camera-retro text-4xl text-indigo-600 mb-4"></i>
+          <h5 class="text-lg font-semibold product-title">Cameras</h5>
+          <button
+            class="product-shop-button text-white py-2 px-6 rounded-lg mt-4 w-full"
+          >
+            Shop Now
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+
+    <script>
+      let currentSlide = 0;
+      const slides = document.querySelectorAll(".carousel-item");
+
+      function showSlide(n) {
+        slides.forEach((slide) => slide.classList.remove("active"));
+        currentSlide = (n + slides.length) % slides.length;
+        slides[currentSlide].classList.add("active");
+      }
+
+      function nextSlide() {
+        showSlide(currentSlide + 1);
+      }
+
+      function prevSlide() {
+        showSlide(currentSlide - 1);
+      }
+
+
+      showSlide(currentSlide);
+
+  
+      setInterval(nextSlide, 5000);
+    </script>
+    
+    <script src="navbar.js"></script>
+    <script src="footer.js"></script>
+  </body>
+</html>

@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="az">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Products - E-commerce</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --primary-color: #6366f1;
+        --accent-color: #ef4444;
+        --text-dark: #111827;
+        --text-body: #374151;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        color: var(--text-body);
+        background-color: #f9fafb;
+      }
+      h2 {
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-dark);
+      }
+      .btn-primary {
+        background-color: var(--primary-color);
+        transition: all 0.3s;
+      }
+      .btn-primary:hover {
+        background-color: #4f46e5;
+      }
+      .sortable:hover {
+        cursor: pointer;
+        background-color: #f3f4f6;
+      }
+      .sort-icon::after {
+        content: "↕";
+        margin-left: 5px;
+        font-size: 0.8em;
+      }
+      .sort-asc::after {
+        content: "↑";
+        margin-left: 5px;
+        font-size: 0.8em;
+      }
+      .sort-desc::after {
+        content: "↓";
+        margin-left: 5px;
+        font-size: 0.8em;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 flex flex-col min-h-screen">
+    <div id="navbar-placeholder"></div>
+
+    <div class="container mx-auto px-4 py-12 flex-grow">
+      <div class="flex justify-between items-center mb-8">
+        <h2 class="text-3xl font-bold">My Products</h2>
+        <button
+            onclick="goToCreateProduct()"
+            class="btn-primary text-white px-6 py-3 rounded-lg shadow-md hover:shadow-lg flex items-center"
+        >
+            <i class="fas fa-plus mr-2"></i> Yeni məhsul əlavə et
+        </button>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100">
+        <div class="flex flex-col md:flex-row justify-between items-center p-6 border-b border-gray-100 bg-gray-50 gap-4">
+          <div class="flex items-center bg-white rounded-lg border border-gray-300 px-3 py-2 shadow-sm">
+            <label class="text-sm font-medium text-gray-600 mr-2">Show</label>
+            <select
+              id="entries-select"
+              class="border-none focus:ring-0 text-sm text-gray-700 font-semibold bg-transparent outline-none"
+            >
+              <option value="10">10</option>
+              <option value="25">25</option>
+              <option value="50">50</option>
+              <option value="100">100</option>
+            </select>
+            <span class="text-sm text-gray-600 ml-2">entries</span>
+          </div>
+          <div class="w-full md:w-auto relative">
+            <span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <i class="fas fa-search text-gray-400"></i>
+            </span>
+            <input
+              type="text"
+              id="search-input"
+              placeholder="Search products..."
+              class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 w-full md:w-64 transition duration-150"
+            />
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+            <table id="products-table" class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-100">
+                <tr>
+                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider sortable" data-sort="id">Id</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider sortable" data-sort="brand">Brend</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider sortable" data-sort="model">Model</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider sortable" data-sort="category">Kateqoriya</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Şəkil</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider sortable" data-sort="price">Qiymət</th>
+                <th class="px-6 py-4 text-left text-xs font-bold text-gray-500 uppercase tracking-wider">Əməliyyatlar</th>
+                </tr>
+            </thead>
+            <tbody id="table-body" class="bg-white divide-y divide-gray-200"></tbody>
+            </table>
+        </div>
+
+        <div class="flex flex-col md:flex-row justify-between items-center p-6 border-t border-gray-100 bg-gray-50">
+          <div class="text-sm text-gray-600 mb-4 md:mb-0">
+            Showing <span id="showing-start" class="font-semibold text-indigo-600">0</span> to
+            <span id="showing-end" class="font-semibold text-indigo-600">0</span> of
+            <span id="total-entries" class="font-semibold text-indigo-600">0</span> entries
+          </div>
+          <div class="flex space-x-2">
+            <button
+              id="prev-btn"
+              class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 transition duration-150"
+            >
+              Previous
+            </button>
+            <div id="pagination-numbers" class="flex space-x-1"></div>
+            <button
+              id="next-btn"
+              class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 transition duration-150"
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="navbar.js"></script>
+
+    <script>
+      function goToCreateProduct() {
+        localStorage.removeItem("editProduct");
+        window.location.href = "create-product.html";
+      }
+
+      let categories = [];
+
+      function loadCategories() {
+        return fetch("http://195.26.245.5:9505/api/categories")
+          .then((resp) => {
+            if (!resp.ok) {
+              throw new Error("Failed to fetch categories");
+            }
+            return resp.json();
+          })
+          .then((data) => {
+            categories = data; 
+          })
+          .catch((err) => {
+            console.error("Error fetching categories:", err);
+          });
+      }
+
+      let currentPage = 1;
+      let entriesPerPage = 10;
+      let totalPages = 1;
+
+      document.addEventListener("DOMContentLoaded", function () {
+        const user = JSON.parse(localStorage.getItem("loggedInUser"));
+        const token = localStorage.getItem("authToken");
+        if (!user || !token) {
+          window.location.href = "login.html";
+          return;
+        }
+
+        const tableBody = document.getElementById("table-body");
+        const searchInput = document.getElementById("search-input");
+        const entriesSelect = document.getElementById("entries-select");
+        const showingStart = document.getElementById("showing-start");
+        const showingEnd = document.getElementById("showing-end");
+        const totalEntries = document.getElementById("total-entries");
+        const prevBtn = document.getElementById("prev-btn");
+        const nextBtn = document.getElementById("next-btn");
+        const paginationNumbers = document.getElementById("pagination-numbers");
+
+        entriesSelect.addEventListener("change", () => {
+          entriesPerPage = parseInt(entriesSelect.value);
+          currentPage = 1;
+          loadProducts();
+        });
+
+        searchInput.addEventListener("input", () => {
+          currentPage = 1;
+          loadProducts();
+        });
+
+        prevBtn.addEventListener("click", () => {
+          if (currentPage > 1) {
+            currentPage--;
+            loadProducts();
+          }
+        });
+
+        nextBtn.addEventListener("click", () => {
+          if (currentPage < totalPages) {
+            currentPage++;
+            loadProducts();
+          }
+        });
+
+        document.querySelectorAll(".sortable").forEach((th) => {
+          th.addEventListener("click", () => {
+            const column = th.getAttribute("data-sort");
+            console.log("Sort by", column);
+          });
+        });
+
+        function loadProducts() {
+          const url = `http://195.26.245.5:9505/api/products/myProducts?page=${
+            currentPage - 1
+          }&size=${entriesPerPage}`;
+          fetch(url, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("Failed to fetch products");
+              }
+              return response.json();
+            })
+            .then((data) => {
+              totalPages = data.totalPages || 1;
+              totalEntries.textContent = data.totalElements || 0;
+              const start =
+                data.totalElements > 0 ? data.page * data.size + 1 : 0;
+              const end = data.page * data.size + data.content.length;
+              showingStart.textContent = start;
+              showingEnd.textContent = end;
+
+              const products = data.content.map((item) => {
+                const cat = categories.find((c) => c.id == item.categoryId);
+                return {
+                  id: item.id,
+                  brand: item.brand || "",
+                  model: item.model || "",
+                  category: cat ? cat.name : item.categoryId,
+                  image: item.imageUrl || "",
+                  price: item.price || 0,
+                  description: item.description || "",
+                };
+              });
+              renderTable(products);
+              updatePagination();
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              tableBody.innerHTML = `
+                <tr>
+                  <td colspan="7" class="text-center py-8 text-gray-500">No data available</td>
+                </tr>
+              `;
+              showingStart.textContent = 0;
+              showingEnd.textContent = 0;
+              totalEntries.textContent = 0;
+            });
+        }
+
+        function renderTable(products) {
+          tableBody.innerHTML = "";
+          if (products.length === 0) {
+            tableBody.innerHTML = `
+              <tr>
+                <td colspan="7" class="text-center py-8 text-gray-500">No data available</td>
+              </tr>
+            `;
+            return;
+          }
+          products.forEach((product) => {
+            const tr = document.createElement("tr");
+            tr.className = "hover:bg-gray-50 transition duration-150";
+            tr.innerHTML = `
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${product.id}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${product.brand}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${product.model}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700"><span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-indigo-100 text-indigo-800">${product.category}</span></td>
+              <td class="px-6 py-4 whitespace-nowrap">
+                <img src="${product.image}" class="w-10 h-10 object-cover rounded-lg shadow-sm" alt="Product Image">
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-semibold text-gray-900">${product.price} ₼</td>
+              <td class="px-6 py-4 whitespace-nowrap text-left text-sm font-medium space-x-2">
+                 <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-3 py-1.5 rounded-md text-xs shadow transition duration-300 edit-btn" data-product='${JSON.stringify(product)}'>
+                  <i class="fas fa-edit mr-1"></i> Redakte
+                </button>
+                <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-md text-xs shadow transition duration-300 delete-btn" data-id="${product.id}">
+                  <i class="fas fa-trash-alt mr-1"></i> Sil
+                </button>
+              </td>
+            `;
+            tableBody.appendChild(tr);
+          });
+
+          document.querySelectorAll(".delete-btn").forEach((btn) => {
+            btn.addEventListener("click", function () {
+              const prodId = this.getAttribute("data-id");
+              deleteProduct(prodId);
+            });
+          });
+
+          document.querySelectorAll(".edit-btn").forEach((btn) => {
+            btn.addEventListener("click", function () {
+              const productData = JSON.parse(this.getAttribute("data-product"));
+              editProduct(productData);
+            });
+          });
+        }
+
+        function updatePagination() {
+          paginationNumbers.innerHTML = "";
+          for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement("button");
+            btn.textContent = i;
+            btn.className = `px-3 py-1 border rounded text-sm transition duration-150 ${
+              i === currentPage 
+              ? "bg-indigo-600 text-white border-indigo-600" 
+              : "border-gray-300 hover:bg-gray-100 text-gray-700"
+            }`;
+            btn.addEventListener("click", () => {
+              currentPage = i;
+              loadProducts();
+            });
+            paginationNumbers.appendChild(btn);
+          }
+          prevBtn.disabled = currentPage === 1;
+          nextBtn.disabled = currentPage === totalPages;
+        }
+
+        function deleteProduct(prodId) {
+          if (!confirm("Are you sure you want to delete this product?")) return;
+          fetch(`http://195.26.245.5:9505/api/products/delete/${prodId}`, {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+          })
+            .then((resp) => {
+              if (resp.status === 204) {
+                return {};
+              }
+              if (!resp.ok) {
+                throw new Error("Failed to delete product");
+              }
+              return resp.json();
+            })
+            .then(() => {
+              loadProducts();
+            })
+            .catch((err) => {
+              console.error(err);
+              alert("Silinmə zamanı xəta baş verdi");
+            });
+        }
+
+        function editProduct(product) {
+          localStorage.setItem("editProduct", JSON.stringify(product));
+          window.location.href = "create-product.html";
+        }
+
+        loadCategories().then(loadProducts);
+      });
+    </script>
+
+    <script
+      src="https://kit.fontawesome.com/558b0d9e50.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="footer.js"></script>
+  </body>
+</html>
