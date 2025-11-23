@@ -85,7 +85,7 @@
     <script src="footer.js"></script>
     
     <script>
-        const STEP_DURATION = 3 * 60 * 1000; // 3 minutes per step
+        const STEP_DURATION = 3 * 60 * 1000;
 
         function trackOrder() {
             const input = document.getElementById('order-id-input');
@@ -94,19 +94,15 @@
             const orderId = input.value.trim().toUpperCase();
 
             if(!orderId) return;
-
-            // LOOKUP IN REAL DATABASE
             const allOrders = JSON.parse(localStorage.getItem("allOrders")) || {};
             const orderData = allOrders[orderId];
 
             if (!orderData) {
-                // Invalid ID
                 resultDiv.classList.add('hidden');
                 errorDiv.classList.remove('hidden');
                 return;
             }
 
-            // Valid Order Found
             errorDiv.classList.add('hidden');
             document.getElementById('display-order-id').textContent = orderId;
             

@@ -118,7 +118,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 window.location.href = "login.html";
             }, 2000);
           } else {
-            showNotification("error-alert", result.data.message || "Registration failed");
+            showNotification("error-alert", result.data.message || "Registration failed"); 
           }
         })
         .catch((error) => {

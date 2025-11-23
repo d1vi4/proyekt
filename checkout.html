@@ -237,7 +237,6 @@
             const code = codeInput.value.trim().toUpperCase();
             if (!code) return;
 
-            // Statik kodları yoxla
             if (PROMO_CODES.hasOwnProperty(code)) {
                 const remaining = MAX_USAGE - getPromoUsage(code);
                 if (remaining > 0) {
@@ -253,7 +252,7 @@
                 return;
             }
 
-            // Bir dəfəlik (Çarx) kodları yoxla
+
             const oneTimeCodes = JSON.parse(localStorage.getItem(`oneTimePromoCodes_${user.username}`)) || {};
             if (oneTimeCodes.hasOwnProperty(code) && !oneTimeCodes[code].used) {
                 currentDiscount = oneTimeCodes[code].discount;

@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html lang="az">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home - E-commerce</title>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
     />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
-
     <style>
       :root {
         --primary-color: #6366f1;
@@ -26,7 +24,7 @@
       }
       h1, h2, h3, h4, h5 {
         font-family: 'Poppins', sans-serif;
-        color: var(--text-color);
+        color: var(--text-dark);
       }
       .section-title {
         border-left: 4px solid var(--accent-color);
@@ -80,95 +78,39 @@
       .product-shop-button:hover {
         background-color: #4f46e5;
       }
-      #wheel-container {
+      .wheel-container {
         position: relative;
-        width: 400px;
-        height: 400px;
+        width: 350px;
+        height: 350px;
         margin: 0 auto;
       }
-      #wheel {
+      #wheel-canvas {
         width: 100%;
         height: 100%;
         transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
       }
-      #spin-arrow {
+      .wheel-arrow {
         position: absolute;
-        top: -20px;
+        top: -15px;
         left: 50%;
         transform: translateX(-50%);
         width: 0; 
         height: 0; 
         border-left: 20px solid transparent;
         border-right: 20px solid transparent;
-        border-top: 40px solid var(--accent-color);
+        border-top: 40px solid var(--text-dark);
         z-index: 10;
       }
-
-      /* Styles for Chat Bot (ДОБАВЛЕНО) */
-      #chat-bot-container {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 1000;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-end;
+      .spin-btn {
+        transition: all 0.2s;
       }
-      .chat-toggle-btn {
-        background-color: var(--primary-color);
-        color: white;
-        width: 60px;
-        height: 60px;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.5rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        cursor: pointer;
-        transition: background-color 0.3s;
+      .spin-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
       }
-      .chat-toggle-btn:hover {
-        background-color: #4f46e5;
-      }
-      .chat-bot-window {
-        width: 300px;
-        height: 400px;
-        background-color: #ffffff;
-        border-radius: 10px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-        margin-bottom: 15px;
-        display: flex;
-        flex-direction: column;
-        overflow: hidden;
-      }
-      .chat-bot-window.hidden {
-        display: none;
-      }
-      #chat-messages {
-        flex-grow: 1;
-        padding: 10px;
-        overflow-y: auto;
-        border-bottom: 1px solid #eee;
-      }
-      .chat-input-area {
-        display: flex;
-        padding: 10px;
-      }
-      #chat-input {
-        flex-grow: 1;
-        padding: 8px;
-        border: 1px solid #ccc;
-        border-radius: 5px 0 0 5px;
-        outline: none;
-      }
-      #chat-send {
-        background-color: var(--primary-color);
-        color: white;
-        padding: 8px 12px;
-        border: none;
-        border-radius: 0 5px 5px 0;
-        cursor: pointer;
+      /* Modal Styles */
+      .modal-bg {
+          background-color: rgba(0, 0, 0, 0.6);
       }
     </style>
   </head>
@@ -185,10 +127,10 @@
         <div class="absolute inset-0 flex items-center p-8 md:p-16">
           <div class="carousel-caption text-white max-w-xl">
             <h1 class="text-5xl font-extrabold mb-4">
-              Bizim ECOMMERCE Mağazamıza Xoş Gəlmisiniz!
+              Welcome to Our E-COMMERCE Store!
             </h1>
             <p class="text-xl mb-6">
-              Bu mağaza Elxan Mardiyev tərəfindən hazırlanıb.
+              This store is crafted by Elxan Mardiyev.
             </p>
           </div>
         </div>
@@ -203,10 +145,10 @@
         <div class="absolute inset-0 flex items-center p-8 md:p-16">
           <div class="carousel-caption text-white max-w-xl">
             <h1 class="text-5xl font-extrabold mb-4">
-              Endirimləri Unutmayın
+              Don't Forget Discounts
             </h1>
             <p class="text-xl mb-6">
-              Elektronika üçün 40% ENDİRİM ilə alış-veriş edin!
+              Shop electronics with up to 40% OFF!
             </p>
           </div>
         </div>
@@ -229,27 +171,27 @@
     <div class="container mx-auto py-10 px-4 max-w-7xl my-8">
       <div class="bg-gradient-to-r from-red-600 to-pink-600 rounded-3xl p-8 md:p-12 text-white shadow-2xl flex flex-col md:flex-row items-center justify-between relative overflow-hidden">
         <div class="z-10 w-full md:w-1/2">
-          <span class="bg-white text-red-600 px-4 py-1 rounded-full font-bold text-sm uppercase mb-4 inline-block animate-pulse">TƏLƏSİN!</span>
-          <h2 class="text-4xl md:text-5xl font-extrabold mb-4">Həftənin Təklifi</h2>
+          <span class="bg-white text-red-600 px-4 py-1 rounded-full font-bold text-sm uppercase mb-4 inline-block animate-pulse">HURRY!</span>
+          <h2 class="text-4xl md:text-5xl font-extrabold mb-4">Deal of the Week</h2>
           <h3 class="text-3xl font-bold mb-6 text-yellow-300">MacBook Pro M3 <span class="line-through text-white opacity-70 text-2xl ml-2">3500 ₼</span> <span class="ml-2">2450 ₼</span></h3>
           
           <div class="flex space-x-4 mb-8">
             <div class="bg-white/20 backdrop-blur-sm p-4 rounded-xl text-center min-w-[80px]">
               <div id="fs-hours" class="text-3xl font-bold">00</div>
-              <div class="text-xs uppercase">Saat</div>
+              <div class="text-xs uppercase">Hours</div>
             </div>
             <div class="bg-white/20 backdrop-blur-sm p-4 rounded-xl text-center min-w-[80px]">
               <div id="fs-minutes" class="text-3xl font-bold">00</div>
-              <div class="text-xs uppercase">Dəqiqə</div>
+              <div class="text-xs uppercase">Minutes</div>
             </div>
             <div class="bg-white/20 backdrop-blur-sm p-4 rounded-xl text-center min-w-[80px]">
               <div id="fs-seconds" class="text-3xl font-bold">00</div>
-              <div class="text-xs uppercase">Saniyə</div>
+              <div class="text-xs uppercase">Seconds</div>
             </div>
           </div>
 
           <button onclick="window.location.href='shop.html'" class="bg-white text-red-600 font-bold py-3 px-8 rounded-full shadow-lg hover:bg-gray-100 transition transform hover:scale-105">
-            İNDİ AL
+            BUY NOW
           </button>
         </div>
         
@@ -262,124 +204,158 @@
       </div>
     </div>
 
+    <div id="fortune-section" class="container mx-auto py-12 px-4 max-w-7xl bg-white rounded-3xl shadow-xl my-12 border border-gray-100 relative">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold mb-2">Wheel of Fortune</h2>
+            <p class="text-gray-500">Spin to win exclusive coupons and cash!</p>
+            <div class="mt-4 inline-block bg-green-50 px-6 py-2 rounded-full border border-green-200">
+                <span class="text-green-700 font-bold" id="wheel-balance">Balance: 0.00 ₼</span>
+            </div>
+        </div>
+
+        <div class="flex flex-col md:flex-row items-center justify-center gap-12">
+            <div class="wheel-container">
+                <div class="wheel-arrow"></div>
+                <canvas id="wheel-canvas" width="500" height="500"></canvas>
+            </div>
+
+            <div class="flex flex-col gap-4 w-full md:w-auto">
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 text-center w-full md:w-80">
+                    <h4 class="font-bold text-lg mb-4">Daily Free Spin</h4>
+                    <p class="text-sm text-gray-500 mb-4" id="free-timer-msg">Available once every 24 hours</p>
+                    <button id="btn-free-spin" class="spin-btn w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg shadow-md transition transform active:scale-95">
+                        Spin for Free
+                    </button>
+                </div>
+
+                <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 text-center w-full md:w-80">
+                    <h4 class="font-bold text-lg mb-4">Premium Spin</h4>
+                    <p class="text-sm text-gray-500 mb-4">Cost: 50.00 ₼ per spin</p>
+                    <button id="btn-paid-spin" class="spin-btn w-full bg-yellow-500 hover:bg-yellow-600 text-white font-bold py-3 px-4 rounded-lg shadow-md transition transform active:scale-95">
+                        Spin for 50 ₼
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="win-modal" class="fixed inset-0 z-50 flex items-center justify-center hidden modal-bg opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-sm w-full text-center transform scale-90 transition-transform duration-300" id="win-modal-content">
+            <div class="w-20 h-20 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4 text-4xl">
+                🎉
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">Congratulations!</h3>
+            <p class="text-gray-600 mb-4" id="win-text">You won a prize!</p>
+            
+            <div id="coupon-display" class="hidden mb-6">
+                <p class="text-xs text-gray-500 uppercase tracking-wide mb-1">Your Coupon Code</p>
+                <div class="flex items-center justify-center space-x-2 bg-gray-100 p-3 rounded-lg border border-dashed border-gray-300">
+                    <code class="text-xl font-mono font-bold text-indigo-600" id="win-code">CODE123</code>
+                    <button onclick="copyWinCode()" class="text-gray-400 hover:text-indigo-600 transition" title="Copy">
+                        <i class="far fa-copy"></i>
+                    </button>
+                </div>
+                <p class="text-xs text-red-500 mt-2">Note: This code can be used only once!</p>
+            </div>
+
+            <button onclick="closeWinModal()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-lg transition">
+                Awesome!
+            </button>
+        </div>
+    </div>
 
     <div class="container mx-auto py-16 px-4 max-w-7xl">
-      <h2 class="section-title">Kolleksiya</h2>
+      <h2 class="section-title">Collection</h2>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div
-          class="collection-card bg-white p-6 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl"
-        >
+        <div class="collection-card bg-white p-6 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl">
           <img
             src="https://i.etsystatic.com/41697743/r/il/76303d/5352062498/il_570xN.5352062498_hs12.jpg"
             alt="New Apple MacBook"
             class="w-full h-80 object-cover rounded-xl mb-4"
           />
-          <h3 class="text-2xl font-bold mb-2 text-red-600">Yeni Apple MacBook</h3>
+          <h3 class="text-2xl font-bold mb-2 text-red-600">New Apple MacBook</h3>
           <p class="text-gray-600 mb-4">
-            Ən güclü və incə MacBook Air M4-ün ən yeni nəsli buradadır. Məhdud Sayda.
+            The newest generation of the powerful and thin MacBook Air M4 is here. Limited Edition.
           </p>
           <a
             href="shop.html"
             class="inline-block text-lg font-semibold text-indigo-600 hover:text-indigo-800 transition duration-300"
-            >İndi Al <i class="fas fa-arrow-right ml-1"></i
+            >Buy Now <i class="fas fa-arrow-right ml-1"></i
           ></a>
         </div>
-        <div
-          class="collection-card bg-white p-6 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl"
-        >
+        <div class="collection-card bg-white p-6 rounded-2xl shadow-xl overflow-hidden hover:shadow-2xl">
           <img
             src="https://cdn.thewirecutter.com/wp-content/media/2023/07/bluetoothheadphones-2048px-0876.jpg?auto=webp&quality=75&width=1024"
             alt="Gaming Headphones"
             class="w-full h-80 object-cover rounded-xl mb-4"
           />
           <h3 class="text-2xl font-bold mb-2 text-red-600">
-            Peşəkar Oyun Qulaqlıqları
+            Professional Gaming Headphones
           </h3>
           <p class="text-gray-600 mb-4">
-            Rəqabət üstünlüyünüz üçün misilsiz rahatlıq və dəqiq səs.
+            Unparalleled comfort and precise sound for your competitive advantage.
           </p>
           <a
             href="shop.html"
             class="inline-block text-lg font-semibold text-indigo-600 hover:text-indigo-800 transition duration-300"
-            >Kəşf Et <i class="fas fa-arrow-right ml-1"></i
+            >Discover <i class="fas fa-arrow-right ml-1"></i
           ></a>
         </div>
       </div>
     </div>
 
     <div class="container mx-auto py-16 px-4 max-w-7xl">
-      <div
-        class="relative bg-gray-900 rounded-2xl p-10 md:p-20 text-white shadow-2xl overflow-hidden"
-      >
+      <div class="relative bg-gray-900 rounded-2xl p-10 md:p-20 text-white shadow-2xl overflow-hidden">
         <div
           class="absolute inset-0 bg-cover bg-center opacity-30"
-          style="
-            background-image: url('https://wallpapers.com/images/featured/minimalist-technology-98rdmn1yo3pi4c9f.jpg');
-          "
+          style="background-image: url('https://wallpapers.com/images/featured/minimalist-technology-98rdmn1yo3pi4c9f.jpg');"
         ></div>
         <div class="relative z-10 flex flex-col md:flex-row items-center justify-between">
           <div class="mb-6 md:mb-0">
             <h3 class="text-4xl font-extrabold mb-2 text-yellow-400">
-              40%-DƏK ENDİRİM
+              UP TO 40% OFF
             </h3>
             <p class="text-xl">
-              Mövsümün ən böyük endirim tədbirini qaçırmayın!
+              Don't miss the biggest sale event of the season!
             </p>
           </div>
           <a
             href="shop.html"
             class="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full shadow-lg transition duration-300"
-            >Bütün Təkliflər</a
+            >All Offers</a
           >
         </div>
       </div>
     </div>
 
     <div class="container mx-auto py-16 px-4 max-w-7xl">
-      <h2 class="section-title">Kateqoriyalar</h2>
+      <h2 class="section-title">Categories</h2>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
         <div class="border border-gray-200 p-5 rounded-2xl text-center hover:border-indigo-300 transition-colors duration-300 bg-white shadow-sm hover:shadow-md">
           <i class="fas fa-laptop text-4xl text-indigo-600 mb-4"></i>
-          <h5 class="text-lg font-semibold product-title">Notbuklar</h5>
-          <button
-            class="product-shop-button text-white py-2 px-6 rounded-lg mt-4 w-full"
-          >
-            Keçid et
-          </button>
+          <h5 class="text-lg font-semibold product-title">Laptops</h5>
+          <button onclick="window.location.href='shop.html'" class="product-shop-button text-white py-2 px-6 rounded-lg mt-4 w-full">Go</button>
         </div>
         <div class="border border-gray-200 p-5 rounded-2xl text-center hover:border-indigo-300 transition-colors duration-300 bg-white shadow-sm hover:shadow-md">
           <i class="fas fa-mobile-alt text-4xl text-indigo-600 mb-4"></i>
-          <h5 class="text-lg font-semibold product-title">Smartfonlar</h5>
-          <button
-            class="product-shop-button text-white py-2 px-6 rounded-lg mt-4 w-full"
-          >
-            Keçid et
-          </button>
+          <h5 class="text-lg font-semibold product-title">Smartphones</h5>
+          <button onclick="window.location.href='shop.html'" class="product-shop-button text-white py-2 px-6 rounded-lg mt-4 w-full">Go</button>
         </div>
         <div class="border border-gray-200 p-5 rounded-2xl text-center hover:border-indigo-300 transition-colors duration-300 bg-white shadow-sm hover:shadow-md">
           <i class="fas fa-headphones-alt text-4xl text-indigo-600 mb-4"></i>
           <h5 class="text-lg font-semibold product-title">Audio</h5>
-          <button
-            class="product-shop-button text-white py-2 px-6 rounded-lg mt-4 w-full"
-          >
-            Keçid et
-          </button>
+          <button onclick="window.location.href='shop.html'" class="product-shop-button text-white py-2 px-6 rounded-lg mt-4 w-full">Go</button>
         </div>
         <div class="border border-gray-200 p-5 rounded-2xl text-center hover:border-indigo-300 transition-colors duration-300 bg-white shadow-sm hover:shadow-md">
           <i class="fas fa-camera-retro text-4xl text-indigo-600 mb-4"></i>
-          <h5 class="text-lg font-semibold product-title">Kameralar</h5>
-          <button
-            class="product-shop-button text-white py-2 px-6 rounded-lg mt-4 w-full"
-          >
-            Keçid et
-          </button>
+          <h5 class="text-lg font-semibold product-title">Cameras</h5>
+          <button onclick="window.location.href='shop.html'" class="product-shop-button text-white py-2 px-6 rounded-lg mt-4 w-full">Go</button>
         </div>
       </div>
     </div>
 
     <div id="footer-placeholder"></div>
 
-    
     <script>
       let currentSlide = 0;
       const slides = document.querySelectorAll(".carousel-item");
@@ -393,12 +369,289 @@
       function prevSlide() { showSlide(currentSlide - 1); }
       showSlide(currentSlide);
       setInterval(nextSlide, 5000);
-      
+
+      document.addEventListener("DOMContentLoaded", function () {
+          const canvas = document.getElementById('wheel-canvas');
+          const ctx = canvas.getContext('2d');
+          const btnFree = document.getElementById('btn-free-spin');
+          const btnPaid = document.getElementById('btn-paid-spin');
+          const timerMsg = document.getElementById('free-timer-msg');
+          const balanceEl = document.getElementById('wheel-balance');
+          
+          const modal = document.getElementById('win-modal');
+          const modalContent = document.getElementById('win-modal-content');
+          const winText = document.getElementById('win-text');
+          const winCodeEl = document.getElementById('win-code');
+          const couponDisplay = document.getElementById('coupon-display');
+          const prizes = [
+              { text: "10% OFF", color: "#FF6384", type: "discount", val: 0.10 },
+              { text: "No Luck", color: "#C9CBCF", type: "none" },
+              { text: "Free Ship", color: "#36A2EB", type: "shipping" },
+              { text: "50 ₼", color: "#FFCE56", type: "cash", val: 50 },
+              { text: "Try Again", color: "#9CA3AF", type: "none" },
+              { text: "20% OFF", color: "#4BC0C0", type: "discount", val: 0.20 },
+              { text: "Jackpot", color: "#9966FF", type: "discount", val: 0.50 },
+              { text: "5% OFF", color: "#FF9F40", type: "discount", val: 0.05 }
+          ];
+
+          let isSpinning = false;
+          let user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+          function updateBalanceDisplay() {
+              const bal = parseFloat(localStorage.getItem("userBalance")) || 0;
+              balanceEl.textContent = `Balance: ${bal.toFixed(2)} ₼`;
+          }
+
+          function drawWheel() {
+              const arc = (2 * Math.PI) / prizes.length;
+              const radius = canvas.width / 2;
+              
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+              ctx.save();
+              ctx.translate(radius, radius);
+
+              ctx.rotate(-Math.PI / 2);
+
+              prizes.forEach((prize, i) => {
+                  const angle = i * arc;
+                  ctx.beginPath();
+                  ctx.moveTo(0, 0);
+                  ctx.arc(0, 0, radius, angle, angle + arc);
+                  ctx.fillStyle = prize.color;
+                  ctx.fill();
+                  ctx.stroke();
+                  
+                  ctx.save();
+                  ctx.rotate(angle + arc / 2);
+                  ctx.textAlign = "right";
+                  ctx.fillStyle = "#fff";
+                  ctx.font = "bold 24px Arial";
+                  ctx.shadowColor = "rgba(0,0,0,0.5)";
+                  ctx.shadowBlur = 4;
+                  ctx.fillText(prize.text, radius - 30, 10);
+                  ctx.restore();
+              });
+              ctx.restore();
+          }
+
+          function checkFreeSpinEligibility() {
+              if(!user) {
+                  btnFree.disabled = true;
+                  btnPaid.disabled = true;
+                  timerMsg.textContent = "Please login first";
+                  return false;
+              }
+              const lastSpin = localStorage.getItem(`lastFreeSpin_${user.username}`);
+              const now = Date.now();
+              const ONE_DAY = 24 * 60 * 60 * 1000;
+
+              if (lastSpin && (now - lastSpin < ONE_DAY)) {
+                  btnFree.disabled = true;
+                  const left = ONE_DAY - (now - lastSpin);
+                  const h = Math.floor(left / (1000 * 60 * 60));
+                  const m = Math.floor((left % (1000 * 60 * 60)) / (1000 * 60));
+                  timerMsg.textContent = `Next free spin in: ${h}h ${m}m`;
+                  return false;
+              } else {
+                  btnFree.disabled = false;
+                  timerMsg.textContent = "Daily free spin available!";
+                  return true;
+              }
+          }
+
+          function generateCouponCode() {
+              const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+              let code = "PROMO-";
+              for(let i=0; i<4; i++) {
+                  code += chars.charAt(Math.floor(Math.random() * chars.length));
+              }
+              return code;
+          }
+
+          function showWinModal(winner, code = null) {
+              winText.textContent = `You won: ${winner.text}`;
+              
+              if(code) {
+                  couponDisplay.classList.remove('hidden');
+                  winCodeEl.textContent = code;
+              } else {
+                  couponDisplay.classList.add('hidden');
+              }
+
+              modal.classList.remove('hidden');
+              setTimeout(() => {
+                  modal.classList.remove('opacity-0');
+                  modalContent.classList.remove('scale-90');
+                  modalContent.classList.add('scale-100');
+              }, 10);
+          }
+
+          window.closeWinModal = function() {
+              modal.classList.add('opacity-0');
+              modalContent.classList.remove('scale-100');
+              modalContent.classList.add('scale-90');
+              setTimeout(() => modal.classList.add('hidden'), 300);
+          }
+
+          window.copyWinCode = function() {
+              const code = winCodeEl.textContent;
+              navigator.clipboard.writeText(code).then(() => {
+                  alert("Code copied: " + code);
+              });
+          }
+
+          function processWin(winner) {
+              if (winner.type === "cash") {
+                  let bal = parseFloat(localStorage.getItem("userBalance")) || 0;
+                  bal += winner.val;
+                  localStorage.setItem("userBalance", bal);
+                  updateBalanceDisplay();
+                  showWinModal(winner);
+              } 
+              else if (winner.type === "discount" || winner.type === "shipping") {
+                  const newCode = generateCouponCode();
+                  let codes = JSON.parse(localStorage.getItem(`oneTimePromoCodes_${user.username}`)) || {};
+                  
+   
+                  let discountVal = winner.val || 0; // 0 for free ship (logic handled in checkout)
+                  if(winner.type === "shipping") discountVal = "freeship";
+
+                  codes[newCode] = { discount: discountVal, used: false, type: winner.type };
+                  localStorage.setItem(`oneTimePromoCodes_${user.username}`, JSON.stringify(codes));
+                  
+                  showWinModal(winner, newCode);
+              } 
+              else {
+                  showWinModal(winner);
+              }
+          }
+
+          function spinWheel(type) {
+              if (isSpinning) return;
+              if (!user) { window.location.href = "login.html"; return; }
+
+              if (type === 'paid') {
+                  let bal = parseFloat(localStorage.getItem("userBalance")) || 0;
+                  if (bal < 50) {
+                      alert("Insufficient balance! You need 50 ₼.");
+                      return;
+                  }
+                  if(!confirm("Spend 50 ₼ for a spin?")) return;
+                  bal -= 50;
+                  localStorage.setItem("userBalance", bal);
+                  updateBalanceDisplay();
+              } else {
+                   localStorage.setItem(`lastFreeSpin_${user.username}`, Date.now());
+              }
+
+              isSpinning = true;
+              btnFree.disabled = true;
+              btnPaid.disabled = true;
+              const winnerIndex = Math.floor(Math.random() * prizes.length);
+              const sliceAngle = 360 / prizes.length;
+              
+              const randomOffset = Math.floor(Math.random() * (sliceAngle - 2)) + 1; 
+              
+              const baseRotation = winnerIndex * sliceAngle;
+              const centerOffset = sliceAngle / 2;
+              const variation = (Math.random() - 0.5) * (sliceAngle * 0.8);
+
+              const targetRotation = (360 * 5) + baseRotation + centerOffset + variation;
+              
+              canvas.style.transform = `rotate(-${targetRotation}deg)`;
+
+              setTimeout(() => {
+                  isSpinning = false;
+                  btnPaid.disabled = false;
+                  checkFreeSpinEligibility();
+                  
+                  const winner = prizes[winnerIndex];
+                  processWin(winner);
+                  
+              }, 4000);
+              
+          }
+          
+          let currentDeg = 0;
+          
+          function spinWheelAdditive(type) {
+             if (isSpinning) return;
+              if (!user) { window.location.href = "login.html"; return; }
+
+              if (type === 'paid') {
+                  let bal = parseFloat(localStorage.getItem("userBalance")) || 0;
+                  if (bal < 50) {
+                      alert("Insufficient balance!");
+                      return;
+                  }
+                  bal -= 50;
+                  localStorage.setItem("userBalance", bal);
+                  updateBalanceDisplay();
+              } else {
+                   localStorage.setItem(`lastFreeSpin_${user.username}`, Date.now());
+              }
+
+              isSpinning = true;
+              btnFree.disabled = true;
+              btnPaid.disabled = true;
+
+              const winnerIndex = Math.floor(Math.random() * prizes.length);
+              const sliceAngle = 360 / prizes.length;
+
+              const targetAngle = winnerIndex * sliceAngle + (sliceAngle / 2);
+              const variation = (Math.random() - 0.5) * (sliceAngle * 0.8);
+              
+    
+              const currentMod = currentDeg % 360;
+              
+
+              
+              const extraSpins = 360 * 5;
+
+              
+              const nextRotation = currentDeg + extraSpins + (360 - currentMod) + targetAngle + variation;
+              
+              currentDeg += extraSpins + Math.random() * 360;
+              
+              const destination = (winnerIndex * sliceAngle) + (sliceAngle/2) + variation;
+              const spins = 5 * 360;
+              
+              const dist = destination - (currentDeg % 360);
+              const totalAdd = spins + (dist >= 0 ? dist : 360 + dist);
+              
+              currentDeg += totalAdd;
+              
+              canvas.style.transform = `rotate(-${currentDeg}deg)`;
+              
+              setTimeout(() => {
+                  isSpinning = false;
+                  btnPaid.disabled = false;
+                  checkFreeSpinEligibility();
+                  processWin(prizes[winnerIndex]);
+              }, 4000);
+          }
+
+
+          btnFree.replaceWith(btnFree.cloneNode(true));
+          btnPaid.replaceWith(btnPaid.cloneNode(true));
+          
+          document.getElementById('btn-free-spin').addEventListener('click', () => {
+              if(checkFreeSpinEligibility()) spinWheelAdditive('free');
+          });
+
+          document.getElementById('btn-paid-spin').addEventListener('click', () => {
+              spinWheelAdditive('paid');
+          });
+
+          drawWheel();
+          updateBalanceDisplay();
+          checkFreeSpinEligibility();
+          setInterval(checkFreeSpinEligibility, 60000);
+      });
     </script>
     
     <script src="navbar.js"></script>
     <script src="flash-sales.js"></script>
-    
     <script src="footer.js"></script>
   </body>
 </html>
