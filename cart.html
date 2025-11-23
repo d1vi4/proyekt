@@ -7,7 +7,6 @@
   <title>Cart - E-commerce</title>
 
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- githuba update ucun komment elxan cool man terefinden -->
   <style>
     @media (max-width: 700px) {
       .product-table {
@@ -89,7 +88,7 @@
                         </td>
                         <td class="py-4 px-4">${item.price} ₼</td>
                         <td class="py-4 px-4">
-                            <input type="number" min="1" value="${item.quantity
+                            <input type="number" min="0" value="${item.quantity
             }" 
                                    class="w-16 border border-gray-300 rounded px-2 py-1 quantity-input"
                                    data-index="${index}">
@@ -128,6 +127,10 @@
 
         if (newQuantity > 0) {
           cartItems[index].quantity = newQuantity;
+          localStorage.setItem("cart", JSON.stringify(cartItems));
+          displayCart();
+        } else {
+          cartItems.splice(index, 1);
           localStorage.setItem("cart", JSON.stringify(cartItems));
           displayCart();
         }

@@ -8,6 +8,11 @@ document.addEventListener("DOMContentLoaded", function () {
       authButton = `<a href="login.html" class="px-3 py-2">Login</a>`;
     }
   
+    function getCartCount() {
+        const cart = JSON.parse(localStorage.getItem("cart")) || [];
+        return cart.reduce((total, item) => total + (item.quantity || 0), 0);
+    }
+  
     const navbar = `
           <nav class="bg-white border-b border-gray-200 transition-colors duration-300" id="main-nav">
               <div class="container mx-auto px-4">
@@ -72,8 +77,9 @@ document.addEventListener("DOMContentLoaded", function () {
                         <i class="fas fa-history"></i>
                    </a>
 
-                  <a href="cart.html" class="px-3 py-2 mr-2 nav-link">
+                  <a href="cart.html" class="px-3 py-2 mr-2 nav-link relative">
                       <i class="fas fa-shopping-cart"></i>
+                      <span id="cart-count" class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold rounded-full h-4 w-4 flex items-center justify-center">${getCartCount()}</span>
                   </a>
                   <a href="profile.html" class="px-3 py-2 nav-link">
                       <i class="fas fa-user"></i> ${user.username} 
