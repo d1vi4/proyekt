@@ -80,6 +80,96 @@
       .product-shop-button:hover {
         background-color: #4f46e5;
       }
+      #wheel-container {
+        position: relative;
+        width: 400px;
+        height: 400px;
+        margin: 0 auto;
+      }
+      #wheel {
+        width: 100%;
+        height: 100%;
+        transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+      }
+      #spin-arrow {
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0; 
+        height: 0; 
+        border-left: 20px solid transparent;
+        border-right: 20px solid transparent;
+        border-top: 40px solid var(--accent-color);
+        z-index: 10;
+      }
+
+      /* Styles for Chat Bot (ДОБАВЛЕНО) */
+      #chat-bot-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+      }
+      .chat-toggle-btn {
+        background-color: var(--primary-color);
+        color: white;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+      .chat-toggle-btn:hover {
+        background-color: #4f46e5;
+      }
+      .chat-bot-window {
+        width: 300px;
+        height: 400px;
+        background-color: #ffffff;
+        border-radius: 10px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+      .chat-bot-window.hidden {
+        display: none;
+      }
+      #chat-messages {
+        flex-grow: 1;
+        padding: 10px;
+        overflow-y: auto;
+        border-bottom: 1px solid #eee;
+      }
+      .chat-input-area {
+        display: flex;
+        padding: 10px;
+      }
+      #chat-input {
+        flex-grow: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px 0 0 5px;
+        outline: none;
+      }
+      #chat-send {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 0 5px 5px 0;
+        cursor: pointer;
+      }
     </style>
   </head>
   <body>
@@ -289,6 +379,7 @@
 
     <div id="footer-placeholder"></div>
 
+    
     <script>
       let currentSlide = 0;
       const slides = document.querySelectorAll(".carousel-item");
@@ -302,10 +393,12 @@
       function prevSlide() { showSlide(currentSlide - 1); }
       showSlide(currentSlide);
       setInterval(nextSlide, 5000);
+      
     </script>
     
     <script src="navbar.js"></script>
     <script src="flash-sales.js"></script>
+    
     <script src="footer.js"></script>
   </body>
 </html>

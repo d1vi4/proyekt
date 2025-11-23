@@ -3,9 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
     let authButton = "";
   
     if (currentPath.includes("login.html")) {
-      authButton = `<a href="signup.html" class="px-3 py-2">Sign Up</a>`;
+      authButton = `<a href="signup.html" class="px-3 py-2">Qeydiyyat</a>`;
     } else {
-      authButton = `<a href="login.html" class="px-3 py-2">Login</a>`;
+      authButton = `<a href="login.html" class="px-3 py-2">Daxil ol</a>`;
     }
   
     function getCartCount() {
@@ -27,12 +27,15 @@ document.addEventListener("DOMContentLoaded", function () {
                       
                       <div class="hidden md:flex items-center space-x-4">
                           <div class="flex space-x-4">
-                              <a href="index.html" class="px-3 py-2 hover:text-blue-600 nav-link">Home</a>
-                              <a href="shop.html" class="px-3 py-2 hover:text-blue-600 nav-link">Shop</a>
+                              <a href="index.html" class="px-3 py-2 hover:text-blue-600 nav-link">Ana Səhifə</a>
+                              <a href="shop.html" class="px-3 py-2 hover:text-blue-600 nav-link">Mağaza</a>
+                              <a href="fortune.html" class="px-3 py-2 hover:text-blue-600 nav-link text-red-600 font-bold" title="Taleh Çarxı">
+                                 <i class="fas fa-dharmachakra"></i>
+                              </a>
                           </div>
                           
                           <div class="relative mx-2">
-                              <input type="text" placeholder="Search" class="border rounded px-3 py-1 w-32">
+                              <input type="text" placeholder="Axtarış" class="border rounded px-3 py-1 w-32">
                           </div>
                           
                           <div id="user-section">${authButton}</div>
@@ -41,8 +44,9 @@ document.addEventListener("DOMContentLoaded", function () {
                   
                   <div id="mobile-menu" class="hidden md:hidden">
                       <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                          <a href="index.html" class="block px-3 py-2 nav-link">Home</a>
-                          <a href="shop.html" class="block px-3 py-2 nav-link">Shop</a>
+                          <a href="index.html" class="block px-3 py-2 nav-link">Ana Səhifə</a>
+                          <a href="shop.html" class="block px-3 py-2 nav-link">Mağaza</a>
+                          <a href="fortune.html" class="block px-3 py-2 nav-link text-red-600 font-bold">Taleh Çarxı</a>
                           <div class="pt-4">
                               ${authButton}
                           </div>
@@ -69,11 +73,11 @@ document.addEventListener("DOMContentLoaded", function () {
                        <i class="fas fa-wallet"></i> ${balance.toFixed(2)} ₼
                    </a>
                    
-                   <a href="wishlist.html" class="px-3 py-2 mr-2 text-red-500 nav-link" title="Wishlist">
+                   <a href="wishlist.html" class="px-3 py-2 mr-2 text-red-500 nav-link" title="Bəyənilənlər">
                         <i class="fas fa-heart"></i>
                    </a>
                    
-                   <a href="transactions.html" class="px-3 py-2 mr-2 text-gray-600 nav-link" title="History">
+                   <a href="transactions.html" class="px-3 py-2 mr-2 text-gray-600 nav-link" title="Əməliyyat Tarixçəsi">
                         <i class="fas fa-history"></i>
                    </a>
 
@@ -85,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
                       <i class="fas fa-user"></i> ${user.username} 
                   </a>
                   <button class="ml-2 bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-sm" id="logout">
-                      <i class="fas fa-sign-out-alt"></i>
+                      <i class="fas fa-sign-out-alt"></i> Çıxış
                   </button>
               </div>
           `;

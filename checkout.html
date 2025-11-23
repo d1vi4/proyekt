@@ -53,31 +53,31 @@
       <div class="flex flex-col lg:flex-row gap-8">
         <div class="w-full lg:w-7/12">
           <div class="bg-white border border-gray-100 rounded-2xl p-8 shadow-lg">
-            <h4 class="text-2xl font-bold mb-6 border-b pb-4">Shipping Information</h4>
+            <h4 class="text-2xl font-bold mb-6 border-b pb-4">Çatdırılma Məlumatı</h4>
             <form id="shipping-form" class="space-y-5" novalidate>
               <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div class="space-y-2">
-                  <label for="firstName" class="block text-sm font-medium text-gray-700">First name</label>
-                  <input type="text" id="firstName" placeholder="Ali" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
+                  <label for="firstName" class="block text-sm font-medium text-gray-700">Ad</label>
+                  <input type="text" id="firstName" placeholder="Əli" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
                 </div>
                 <div class="space-y-2">
-                  <label for="lastName" class="block text-sm font-medium text-gray-700">Last name</label>
-                  <input type="text" id="lastName" placeholder="Aliyev" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
+                  <label for="lastName" class="block text-sm font-medium text-gray-700">Soyad</label>
+                  <input type="text" id="lastName" placeholder="Əliyev" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
                 </div>
               </div>
 
               <div class="space-y-2">
-                <label for="city" class="block text-sm font-medium text-gray-700">City</label>
-                <input type="text" id="city" placeholder="Baku" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
+                <label for="city" class="block text-sm font-medium text-gray-700">Şəhər</label>
+                <input type="text" id="city" placeholder="Bakı" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
               </div>
 
               <div class="space-y-2">
-                <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
-                <input type="text" id="address" placeholder="Street, House/Apartment" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
+                <label for="address" class="block text-sm font-medium text-gray-700">Ünvan</label>
+                <input type="text" id="address" placeholder="Küçə, Ev/Mənzil" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
               </div>
 
               <div class="space-y-2">
-                <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+                <label for="phone" class="block text-sm font-medium text-gray-700">Telefon</label>
                 <input type="tel" id="phone" placeholder="+994 xx xxx xx xx" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
               </div>
 
@@ -86,7 +86,7 @@
                   <input type="checkbox" id="termsCheck" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 cursor-pointer" required />
                 </div>
                 <div class="ml-3 text-sm">
-                  <label for="termsCheck" class="font-medium text-gray-700 cursor-pointer">I agree to the terms and conditions</label>
+                  <label for="termsCheck" class="font-medium text-gray-700 cursor-pointer">Şərtlərlə və qaydalarla razıyam</label>
                 </div>
               </div>
             </form>
@@ -95,40 +95,40 @@
 
         <div class="w-full lg:w-5/12 space-y-6">
           <div class="bg-white border border-gray-100 rounded-2xl p-8 shadow-lg">
-            <h5 class="text-xl font-bold mb-4 text-gray-800">Order Summary</h5>
+            <h5 class="text-xl font-bold mb-4 text-gray-800">Sifariş Xülasəsi</h5>
             
             <div class="mb-4 p-3 bg-gray-50 rounded border border-gray-200">
-                <p class="text-sm text-gray-500">Your Wallet Balance:</p>
+                <p class="text-sm text-gray-500">Balansınız:</p>
                 <p class="text-lg font-bold text-indigo-600" id="user-balance-display">0.00 ₼</p>
             </div>
 
             <div class="space-y-3 text-gray-600">
               <div class="flex justify-between">
-                <span>Subtotal</span>
+                <span>Yekun məbləğ</span>
                 <span id="subtotal" class="font-medium text-gray-900">0 ₼</span>
               </div>
               
               <div class="flex flex-col space-y-2 py-2 border-t border-b border-gray-100">
-                <label class="text-sm font-semibold">Promo Code</label>
+                <label class="text-sm font-semibold">Promokod</label>
                 <div class="flex space-x-2">
-                    <input type="text" id="promo-code-input" placeholder="Enter code" class="border border-gray-300 rounded px-3 py-2 w-full focus:outline-none focus:border-indigo-500 uppercase">
-                    <button id="apply-promo-btn" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 transition">Apply</button>
+                    <input type="text" id="promo-code-input" placeholder="Kodu daxil edin" class="border border-gray-300 rounded px-3 py-2 w-full focus:outline-none focus:border-indigo-500 uppercase">
+                    <button id="apply-promo-btn" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 transition">Tətbiq et</button>
                 </div>
                 <p id="promo-message" class="text-xs font-medium min-h-[1.25rem]"></p>
               </div>
 
               <div class="flex justify-between hidden" id="discount-row">
-                <span class="text-red-600">Discount</span>
+                <span class="text-red-600">Endirim</span>
                 <span id="discount-amount" class="font-medium text-red-600">0.00 ₼</span>
               </div>
 
               <div class="flex justify-between">
-                <span>Shipping</span>
-                <span class="text-green-600 font-medium">Free</span>
+                <span>Çatdırılma</span>
+                <span class="text-green-600 font-medium">Pulsuz</span>
               </div>
               <hr class="my-3 border-gray-200" />
               <div class="flex justify-between font-bold text-lg text-gray-900">
-                <span>Total</span>
+                <span>Cəmi</span>
                 <span id="total">0 ₼</span>
               </div>
             </div>
@@ -136,7 +136,7 @@
               id="placeOrderBtn"
               class="w-full checkout-btn text-white py-3 px-6 rounded-lg font-bold shadow-md hover:shadow-lg transition duration-300 mt-6 flex justify-center items-center"
             >
-              Pay with Wallet <i class="fas fa-wallet ml-2"></i>
+              Balansla Ödə <i class="fas fa-wallet ml-2"></i>
             </button>
           </div>
         </div>
@@ -148,22 +148,22 @@
             <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <i class="fas fa-check text-4xl text-green-600"></i>
             </div>
-            <h3 class="text-2xl font-bold text-gray-900 mb-2">Order Successful!</h3>
-            <p class="text-gray-600 mb-4">Thank you for your purchase.</p>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">Sifariş Uğurlu Oldu!</h3>
+            <p class="text-gray-600 mb-4">Alış-verişiniz üçün təşəkkür edirik.</p>
             
             <div class="bg-gray-100 p-4 rounded-lg mb-6 border border-gray-200">
-                <p class="text-xs text-gray-500 uppercase tracking-wide">Your Order ID</p>
+                <p class="text-xs text-gray-500 uppercase tracking-wide">Sizin Sifariş ID-niz</p>
                 <p class="text-3xl font-mono font-bold text-indigo-600 mt-1" id="modal-order-id">ORD-XXXX</p>
-                <p class="text-xs text-gray-400 mt-1">Save this ID to track your order!</p>
+                <p class="text-xs text-gray-400 mt-1">Sifarişi izləmək üçün bu ID-ni yadda saxlayın!</p>
             </div>
             
             <div id="cashback-message" class="text-lg font-bold text-green-600 mb-4 hidden"></div>
 
             <button onclick="window.location.href='tracking.html'" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-bold transition mb-2">
-                Track Order
+                Sifarişi İzlə
             </button>
             <button onclick="window.location.href='index.html'" class="w-full text-gray-500 hover:text-gray-700 py-2 text-sm">
-                Back to Home
+                Ana Səhifəyə Qayıt
             </button>
         </div>
     </div>
@@ -175,6 +175,7 @@
       const MAX_USAGE = 3;
       let currentDiscount = 0;
       let appliedCode = null;
+      let user = JSON.parse(localStorage.getItem("loggedInUser"));
 
       function getPromoUsage(code) {
         const usageData = JSON.parse(localStorage.getItem('promoUsage')) || {};
@@ -210,6 +211,8 @@
       }
 
       document.addEventListener("DOMContentLoaded", function () {
+        if (!user) { window.location.href = "login.html"; return; }
+        
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
         let subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
         let currentBalance = parseFloat(localStorage.getItem("userBalance")) || 0;
@@ -221,6 +224,7 @@
             document.getElementById("discount-amount").textContent = "-" + discountValue.toFixed(2) + " ₼";
             document.getElementById("total").textContent = finalTotal.toFixed(2) + " ₼";
             if(currentDiscount > 0) document.getElementById("discount-row").classList.remove("hidden");
+            else document.getElementById("discount-row").classList.add("hidden");
             return finalTotal;
         }
 
@@ -233,41 +237,50 @@
             const code = codeInput.value.trim().toUpperCase();
             if (!code) return;
 
+            // Statik kodları yoxla
             if (PROMO_CODES.hasOwnProperty(code)) {
                 const remaining = MAX_USAGE - getPromoUsage(code);
                 if (remaining > 0) {
                     currentDiscount = PROMO_CODES[code];
-                    appliedCode = code;
+                    appliedCode = { code: code, type: 'static' };
                     messageEl.className = "text-xs font-medium text-green-600";
-                    messageEl.textContent = `Success! ${PROMO_CODES[code] * 100}% off.`;
+                    messageEl.textContent = `Uğurlu! ${PROMO_CODES[code] * 100}% endirim tətbiq edildi.`;
                     updateTotal();
                 } else {
                     messageEl.className = "text-xs font-medium text-red-600";
-                    messageEl.textContent = "Code limit reached.";
+                    messageEl.textContent = "Kodun istifadə limiti dolub.";
                 }
                 return;
             }
 
+            // Bir dəfəlik (Çarx) kodları yoxla
+            const oneTimeCodes = JSON.parse(localStorage.getItem(`oneTimePromoCodes_${user.username}`)) || {};
+            if (oneTimeCodes.hasOwnProperty(code) && !oneTimeCodes[code].used) {
+                currentDiscount = oneTimeCodes[code].discount;
+                appliedCode = { code: code, type: 'onetime' };
+                messageEl.className = "text-xs font-medium text-green-600";
+                messageEl.textContent = `Uğurlu! ${oneTimeCodes[code].discount * 100}% endirim tətbiq edildi. (Taleh Çarxı)`;
+                updateTotal();
+                return;
+            }
+
             messageEl.className = "text-xs font-medium text-red-600";
-            messageEl.textContent = "Invalid code.";
+            messageEl.textContent = "Yanlış kod.";
         });
 
         document.getElementById("placeOrderBtn").addEventListener("click", function () {
-            if (cart.length === 0) { alert("Cart is empty!"); return; }
+            if (cart.length === 0) { alert("Səbət boşdur!"); return; }
             if (!validateForm("shipping-form")) return;
             
             const finalTotal = updateTotal();
 
             if (currentBalance >= finalTotal) {
-                // Payment Success
                 const cashbackPercent = Math.random() * 5; 
                 const cashbackAmount = finalTotal * (cashbackPercent / 100);
                 let newBalance = currentBalance - finalTotal + cashbackAmount; 
                 
-                // Generate REAL Order ID
                 const orderId = "ORD-" + Math.floor(10000 + Math.random() * 90000);
                 
-                // Save Order to Global DB (LocalStorage)
                 const orderData = {
                     id: orderId,
                     date: Date.now(),
@@ -276,13 +289,10 @@
                     status: "Processing"
                 };
                 
-                // Save to 'allOrders' for tracking
                 let allOrders = JSON.parse(localStorage.getItem("allOrders")) || {};
                 allOrders[orderId] = orderData;
                 localStorage.setItem("allOrders", JSON.stringify(allOrders));
 
-                // Save to User's personal history
-                let user = JSON.parse(localStorage.getItem("loggedInUser"));
                 if (user) {
                     let myOrders = JSON.parse(localStorage.getItem("myOrders_" + user.username)) || [];
                     myOrders.unshift(orderData);
@@ -290,22 +300,33 @@
                 }
 
                 localStorage.setItem("userBalance", newBalance);
-                if (appliedCode) incrementPromoUsage(appliedCode);
+                
+                if (appliedCode) {
+                    if (appliedCode.type === 'static') {
+                        incrementPromoUsage(appliedCode.code);
+                    } else if (appliedCode.type === 'onetime') {
+                        const oneTimeCodes = JSON.parse(localStorage.getItem(`oneTimePromoCodes_${user.username}`)) || {};
+                        if (oneTimeCodes[appliedCode.code]) {
+                            oneTimeCodes[appliedCode.code].used = true;
+                            localStorage.setItem(`oneTimePromoCodes_${user.username}`, JSON.stringify(oneTimeCodes));
+                        }
+                    }
+                }
 
-                addTransaction("Purchase", -finalTotal);
-                addTransaction("Cashback", cashbackAmount);
+                addTransaction("Alış", -finalTotal);
+                addTransaction("Kəşbək", cashbackAmount);
 
                 document.getElementById("modal-order-id").textContent = orderId;
                 
                 const cashbackMsgEl = document.getElementById("cashback-message");
-                cashbackMsgEl.textContent = `Cashback earned: +${cashbackAmount.toFixed(2)} ₼!`;
+                cashbackMsgEl.textContent = `Qazanılan kəşbək: +${cashbackAmount.toFixed(2)} ₼!`;
                 cashbackMsgEl.classList.remove("hidden");
 
                 document.getElementById("success-modal").classList.remove("hidden");
                 
                 localStorage.removeItem("cart");
             } else {
-                alert("Insufficient funds! Please top up.");
+                alert("Balansınızda yetərli vəsait yoxdur! Zəhmət olmasa balansı artırın.");
             }
         });
       });

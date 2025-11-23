@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Taleh Çarxı - E-commerce</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --accent-color: #ef4444;
+        }
+        body { background-color: #f9fafb; }
+        .wheel-container { position: relative; width: 400px; height: 400px; }
+        .wheel {
+            transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1.0);
+            transform-origin: center;
+        }
+        .sector {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
+            transform-origin: 100% 50%;
+        }
+        .text {
+            fill: white;
+            font-weight: bold;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        .pointer {
+            width: 0;
+            height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 25px solid var(--accent-color);
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+    <div id="navbar-placeholder"></div>
+    <div class="notification-wrapper fixed top-4 right-4 z-50 flex flex-col items-end" id="main-notification-container"></div>
+
+    <div class="flex justify-center items-center flex-grow py-12 px-4">
+        <div class="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-2xl text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">Taleh Çarxı</h2>
+            <p class="text-gray-500 mb-6">Şansınızı yoxlayın və böyük hədiyyələr qazanın!</p>
+
+            <div class="flex flex-col md:flex-row items-center justify-around">
+                <div class="relative wheel-container mb-8 md:mb-0">
+                    <div class="pointer"></div>
+                    <svg id="wheel-svg" class="wheel" viewBox="0 0 400 400">
+                        <defs>
+                            <path id="text-path-1" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
+                            <path id="text-path-2" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
+                            <path id="text-path-3" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
+                            <path id="text-path-4" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
+                            <path id="text-path-5" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
+                            <path id="text-path-6" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
+                            <path id="text-path-7" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
+                            <path id="text-path-8" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
+                        </defs>
+                        </svg>
+                </div>
+                
+                <div class="space-y-4 w-full md:w-1/3">
+                    <div class="bg-gray-100 p-4 rounded-lg">
+                        <p class="text-sm text-gray-600">Balansınız:</p>
+                        <p class="text-2xl font-bold text-green-600" id="current-balance">0.00 ₼</p>
+                    </div>
+                    
+                    <button id="spin-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-6 rounded-lg font-bold transition shadow-md disabled:opacity-50">
+                        Çarxı Fırlat (5 ₼)
+                    </button>
+                    
+                    <p id="result-message" class="text-xl font-bold text-red-600 min-h-[30px]"></p>
+                    <p id="promo-code-display" class="hidden bg-yellow-100 text-yellow-800 p-2 rounded text-sm font-mono"></p>
+                    
+                    <button id="free-spin-btn" class="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg font-bold transition shadow-sm disabled:opacity-50">
+                        Pulsuz Fırlat
+                    </button>
+                    <p class="text-xs text-gray-500 mt-2">Qeyd: Pulsuz fırlatma qeydiyyatdan sonra 1 dəfə mümkündür.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="footer-placeholder"></div>
+    
+    <script src="navbar.js"></script>
+    <script src="footer.js"></script>
+    <script src="app-utils.js"></script>
+    
+    <script>
+        const PRIZES = [
+            { id: 1, text: "5 ₼ Balans", value: 5, type: "cash", color: "#FFEB3B" },
+            { id: 2, text: "10% Promo", value: 0.10, type: "promo", color: "#F44336" },
+            { id: 3, text: "10 ₼ Balans", value: 10, type: "cash", color: "#4CAF50" },
+            { id: 4, text: "Uduş Yoxdur", value: 0, type: "none", color: "#2196F3" },
+            { id: 5, text: "20 ₼ Balans", value: 20, type: "cash", color: "#FF9800" },
+            { id: 6, text: "20% Promo", value: 0.20, type: "promo", color: "#9C27B0" },
+            { id: 7, text: "2 ₼ Balans", value: 2, type: "cash", color: "#00BCD4" },
+            { id: 8, text: "Uduş Yoxdur", value: 0, type: "none", color: "#795548" }
+        ];
+        
+        const SPIN_COST = 5.0;
+        const SEGMENT_ANGLE = 360 / PRIZES.length;
+        const wheel = document.getElementById("wheel-svg");
+        const spinBtn = document.getElementById("spin-btn");
+        const freeSpinBtn = document.getElementById("free-spin-btn");
+        const balanceEl = document.getElementById("current-balance");
+        const resultEl = document.getElementById("result-message");
+        const promoDisplayEl = document.getElementById("promo-code-display");
+        
+        let currentRotation = 0;
+        
+        function renderWheel() {
+            wheel.innerHTML = '';
+            PRIZES.forEach((prize, index) => {
+                const rotation = index * SEGMENT_ANGLE;
+                const pathId = `text-path-${index + 1}`;
+                
+                const segment = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                segment.setAttribute('d', `M 200 200 L 400 200 A 200 200 0 0 0 200 0 Z`);
+                segment.setAttribute('fill', prize.color);
+                segment.setAttribute('transform', `rotate(${rotation} 200 200)`);
+                wheel.appendChild(segment);
+                
+                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
+                text.setAttribute('x', '220');
+                text.setAttribute('y', '210');
+                text.setAttribute('fill', 'white');
+                text.setAttribute('transform', `rotate(${rotation + SEGMENT_ANGLE / 2} 200 200)`);
+                text.innerHTML = `<tspan>${prize.text}</tspan>`;
+                wheel.appendChild(text);
+            });
+            
+            const centerCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+            centerCircle.setAttribute('cx', '200');
+            centerCircle.setAttribute('cy', '200');
+            centerCircle.setAttribute('r', '50');
+            centerCircle.setAttribute('fill', 'white');
+            centerCircle.setAttribute('stroke', 'var(--accent-color)');
+            centerCircle.setAttribute('stroke-width', '5');
+            wheel.appendChild(centerCircle);
+            
+            const centerText = document.createElementNS("http://www.w3.org/2000/svg", "text");
+            centerText.setAttribute('x', '200');
+            centerText.setAttribute('y', '210');
+            centerText.setAttribute('text-anchor', 'middle');
+            centerText.setAttribute('font-weight', 'bold');
+            centerText.setAttribute('fill', 'var(--accent-color)');
+            centerText.innerHTML = 'Fırlat';
+            wheel.appendChild(centerText);
+        }
+        
+        function loadUserData() {
+            const user = JSON.parse(localStorage.getItem("loggedInUser"));
+            if (!user) { window.location.href = "login.html"; return null; }
+            let balance = parseFloat(localStorage.getItem("userBalance")) || 0;
+            const freeSpinUsed = localStorage.getItem(`freeSpinUsed_${user.username}`) === 'true';
+            
+            balanceEl.textContent = balance.toFixed(2) + " ₼";
+            spinBtn.disabled = balance < SPIN_COST;
+            freeSpinBtn.disabled = freeSpinUsed;
+            
+            return { user, balance, freeSpinUsed };
+        }
+        
+        function updateBalance(amount, type) {
+            let balance = parseFloat(localStorage.getItem("userBalance")) || 0;
+            balance += amount;
+            localStorage.setItem("userBalance", balance);
+            balanceEl.textContent = balance.toFixed(2) + " ₼";
+            if (window.addTransaction) {
+                window.addTransaction(type, amount);
+            }
+        }
+        
+        function handlePrize(prize) {
+            resultEl.textContent = "";
+            promoDisplayEl.classList.add("hidden");
+            
+            if (prize.type === "cash") {
+                updateBalance(prize.value, "Uduş (Çarx)");
+                showNotification(`Təbriklər! Balansınıza ${prize.value.toFixed(2)} ₼ əlavə edildi.`, 'success');
+            } else if (prize.type === "promo") {
+                const code = generatePromoCode();
+                const user = JSON.parse(localStorage.getItem("loggedInUser"));
+                if (!user) return;
+
+                let promoCodes = JSON.parse(localStorage.getItem(`oneTimePromoCodes_${user.username}`)) || {};
+                promoCodes[code] = { discount: prize.value, used: false };
+                localStorage.setItem(`oneTimePromoCodes_${user.username}`, JSON.stringify(promoCodes));
+
+                resultEl.textContent = `Təbriklər! ${prize.value * 100}% ENDİRİM qazandınız!`;
+                promoDisplayEl.textContent = `KODUNUZ: ${code}`;
+                promoDisplayEl.classList.remove("hidden");
+                showNotification(`Yeni promokod qazandınız: ${code}!`, 'success');
+            } else {
+                resultEl.textContent = "Təəssüf, növbəti dəfə şansınızı sınayın.";
+            }
+        }
+        
+        function spin(isFree) {
+            const userData = loadUserData();
+            if (!userData) return;
+            
+            if (!isFree && userData.balance < SPIN_COST) {
+                showNotification("Balansınız fırlatmaq üçün yetərli deyil. Zəhmət olmasa balansı artırın.", 'error');
+                return;
+            }
+            
+            spinBtn.disabled = true;
+            freeSpinBtn.disabled = true;
+            resultEl.textContent = "Fırlanır...";
+            promoDisplayEl.classList.add("hidden");
+            
+            if (!isFree) {
+                updateBalance(-SPIN_COST, "Çarx xərci");
+            } else {
+                localStorage.setItem(`freeSpinUsed_${userData.user.username}`, 'true');
+            }
+            
+            const winningIndex = Math.floor(Math.random() * PRIZES.length);
+            const prize = PRIZES[winningIndex];
+            
+            const targetRotation = (360 * 5) + (360 - (winningIndex * SEGMENT_ANGLE + SEGMENT_ANGLE / 2));
+            
+            wheel.style.transition = 'transform 5s cubic-bezier(0.25, 0.1, 0.25, 1.0)';
+            wheel.style.transform = `rotate(${targetRotation}deg)`;
+            currentRotation = targetRotation;
+            
+            setTimeout(() => {
+                wheel.style.transition = 'none';
+                wheel.style.transform = `rotate(${targetRotation % 360}deg)`;
+                currentRotation = targetRotation % 360;
+                handlePrize(prize);
+                loadUserData();
+            }, 5000);
+        }
+        
+        document.addEventListener("DOMContentLoaded", function () {
+            renderWheel();
+            loadUserData();
+            
+            spinBtn.addEventListener("click", () => spin(false));
+            freeSpinBtn.addEventListener("click", () => {
+                const userData = loadUserData();
+                if (userData && !userData.freeSpinUsed) {
+                    spin(true);
+                }
+            });
+        });
+    </script>
+</body>
+</html>
