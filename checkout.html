@@ -156,6 +156,8 @@
                 <p class="text-3xl font-mono font-bold text-indigo-600 mt-1" id="modal-order-id">ORD-XXXX</p>
                 <p class="text-xs text-gray-400 mt-1">Save this ID to track your order!</p>
             </div>
+            
+            <div id="cashback-message" class="text-lg font-bold text-green-600 mb-4 hidden"></div>
 
             <button onclick="window.location.href='tracking.html'" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-bold transition mb-2">
                 Track Order
@@ -173,7 +175,6 @@
       const MAX_USAGE = 3;
       let currentDiscount = 0;
       let appliedCode = null;
-      let isWheelCoupon = false;
 
       function getPromoUsage(code) {
         const usageData = JSON.parse(localStorage.getItem('promoUsage')) || {};
@@ -212,7 +213,6 @@
         let cart = JSON.parse(localStorage.getItem("cart")) || [];
         let subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
         let currentBalance = parseFloat(localStorage.getItem("userBalance")) || 0;
-        const wheelCouponData = JSON.parse(localStorage.getItem("activeWheelCoupon"));
 
         function updateTotal() {
             const discountValue = subtotal * currentDiscount;
@@ -238,28 +238,12 @@
                 if (remaining > 0) {
                     currentDiscount = PROMO_CODES[code];
                     appliedCode = code;
-                    isWheelCoupon = false;
                     messageEl.className = "text-xs font-medium text-green-600";
                     messageEl.textContent = `Success! ${PROMO_CODES[code] * 100}% off.`;
                     updateTotal();
                 } else {
                     messageEl.className = "text-xs font-medium text-red-600";
                     messageEl.textContent = "Code limit reached.";
-                }
-                return;
-            }
-            
-            if (wheelCouponData && wheelCouponData.code === code) {
-                if (Date.now() < wheelCouponData.expires) {
-                    currentDiscount = wheelCouponData.discount;
-                    appliedCode = code;
-                    isWheelCoupon = true;
-                    messageEl.className = "text-xs font-medium text-green-600";
-                    messageEl.textContent = `WHEEL WINNER! ${wheelCouponData.discount * 100}% OFF applied!`;
-                    updateTotal();
-                } else {
-                    messageEl.className = "text-xs font-medium text-red-600";
-                    messageEl.textContent = "Expired.";
                 }
                 return;
             }
@@ -305,16 +289,18 @@
                     localStorage.setItem("myOrders_" + user.username, JSON.stringify(myOrders));
                 }
 
-                // Update Balance & Usage
                 localStorage.setItem("userBalance", newBalance);
-                if (appliedCode && !isWheelCoupon) incrementPromoUsage(appliedCode);
-                if (isWheelCoupon) localStorage.removeItem("activeWheelCoupon");
+                if (appliedCode) incrementPromoUsage(appliedCode);
 
                 addTransaction("Purchase", -finalTotal);
                 addTransaction("Cashback", cashbackAmount);
 
-                // Show Success Modal
                 document.getElementById("modal-order-id").textContent = orderId;
+                
+                const cashbackMsgEl = document.getElementById("cashback-message");
+                cashbackMsgEl.textContent = `Cashback earned: +${cashbackAmount.toFixed(2)} ₼!`;
+                cashbackMsgEl.classList.remove("hidden");
+
                 document.getElementById("success-modal").classList.remove("hidden");
                 
                 localStorage.removeItem("cart");
@@ -327,4 +313,4 @@
     <script src="navbar.js"></script>
     <script src="footer.js"></script>
   </body>
-</html><!-- githuba update ucun komment elxan cool man terefinden -->
+</html>

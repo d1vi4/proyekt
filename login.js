@@ -7,7 +7,7 @@ function showNotification(elementId, message) {
   element.classList.add("scale-100");
 
   setTimeout(() => {
-    closeNotification(elementId); //githuba update ucun komment elxan cool man terefinden
+    closeNotification(elementId);
   }, 5000);
 }
 
@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
               });
           } else {
             const errorMsg =
-              result.data.message || "İstifadəçi adı və ya şifrə yanlışdır.";
+              result.data.message || "Username or password is incorrect.";
             showNotification("error-alert", errorMsg);
           }
         })
