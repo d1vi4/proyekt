@@ -1,264 +1,383 @@
 <!DOCTYPE html>
-<html lang="az">
+<html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Taleh Çarxı - E-commerce</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wheel of Fortune</title>
     <style>
-        :root {
-            --primary-color: #6366f1;
-            --accent-color: #ef4444;
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            color: #333333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
-        body { background-color: #f9fafb; }
-        .wheel-container { position: relative; width: 400px; height: 400px; }
-        .wheel {
-            transition: transform 5s cubic-bezier(0.25, 0.1, 0.25, 1.0);
-            transform-origin: center;
+
+        #navbar {
+            width: 100%;
+            min-height: 60px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 40px;
         }
-        .sector {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
-            transform-origin: 100% 50%;
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            box-sizing: border-box;
         }
-        .text {
-            fill: white;
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            color: #1a1a1a;
+            font-weight: 700;
+        }
+
+        .balance-display {
+            font-size: 1.2rem;
+            color: #28a745;
             font-weight: bold;
-            font-size: 14px;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            background: #f1fdf4;
+            padding: 10px 20px;
+            border-radius: 50px;
+            border: 1px solid #d4edda;
         }
-        .pointer {
-            width: 0;
-            height: 0;
-            border-left: 10px solid transparent;
-            border-right: 10px solid transparent;
-            border-bottom: 25px solid var(--accent-color);
+
+        .wheel-wrapper {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            margin-bottom: 40px;
+        }
+
+        canvas {
+            width: 100%;
+            height: 100%;
+            transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
+        }
+
+        .arrow {
             position: absolute;
-            top: 0;
+            top: -15px;
             left: 50%;
             transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 20px solid transparent;
+            border-right: 20px solid transparent;
+            border-top: 40px solid #333;
             z-index: 10;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            min-width: 200px;
+        }
+
+        .btn-free {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-free:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-free:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .btn-paid {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .btn-paid:hover {
+            background-color: #e0a800;
+        }
+
+        .timer-msg {
+            display: block;
+            width: 100%;
+            text-align: center;
+            color: #dc3545;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .coupons-section {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+            margin-bottom: 50px;
+        }
+
+        .coupons-section h2 {
+            font-size: 1.5rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: #444;
+        }
+
+        .coupon-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 15px 20px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .coupon-text {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .coupon-code {
+            background: #e9ecef;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            color: #d63384;
+            border: 1px dashed #adb5bd;
         }
     </style>
 </head>
-<body class="flex flex-col min-h-screen">
-    <div id="navbar-placeholder"></div>
-    <div class="notification-wrapper fixed top-4 right-4 z-50 flex flex-col items-end" id="main-notification-container"></div>
+<body>
 
-    <div class="flex justify-center items-center flex-grow py-12 px-4">
-        <div class="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-2xl text-center">
-            <h2 class="text-3xl font-bold text-gray-800 mb-2">Taleh Çarxı</h2>
-            <p class="text-gray-500 mb-6">Şansınızı yoxlayın və böyük hədiyyələr qazanın!</p>
+    <div id="navbar"></div>
 
-            <div class="flex flex-col md:flex-row items-center justify-around">
-                <div class="relative wheel-container mb-8 md:mb-0">
-                    <div class="pointer"></div>
-                    <svg id="wheel-svg" class="wheel" viewBox="0 0 400 400">
-                        <defs>
-                            <path id="text-path-1" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
-                            <path id="text-path-2" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
-                            <path id="text-path-3" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
-                            <path id="text-path-4" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
-                            <path id="text-path-5" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
-                            <path id="text-path-6" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
-                            <path id="text-path-7" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
-                            <path id="text-path-8" d="M 200 200 m 0 -180 a 180 180 0 0 1 180 180" />
-                        </defs>
-                        </svg>
-                </div>
-                
-                <div class="space-y-4 w-full md:w-1/3">
-                    <div class="bg-gray-100 p-4 rounded-lg">
-                        <p class="text-sm text-gray-600">Balansınız:</p>
-                        <p class="text-2xl font-bold text-green-600" id="current-balance">0.00 ₼</p>
-                    </div>
-                    
-                    <button id="spin-btn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-6 rounded-lg font-bold transition shadow-md disabled:opacity-50">
-                        Çarxı Fırlat (5 ₼)
-                    </button>
-                    
-                    <p id="result-message" class="text-xl font-bold text-red-600 min-h-[30px]"></p>
-                    <p id="promo-code-display" class="hidden bg-yellow-100 text-yellow-800 p-2 rounded text-sm font-mono"></p>
-                    
-                    <button id="free-spin-btn" class="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-6 rounded-lg font-bold transition shadow-sm disabled:opacity-50">
-                        Pulsuz Fırlat
-                    </button>
-                    <p class="text-xs text-gray-500 mt-2">Qeyd: Pulsuz fırlatma qeydiyyatdan sonra 1 dəfə mümkündür.</p>
-                </div>
+    <div class="container">
+        <div class="header-section">
+            <h1>Lucky Wheel</h1>
+            <p>Spin to win exclusive discounts and coupons!</p>
+            <div class="balance-display" id="balance-display">Balance: 1500 ₼</div>
+        </div>
+
+        <div class="wheel-wrapper">
+            <div class="arrow"></div>
+            <canvas id="wheel" width="500" height="500"></canvas>
+        </div>
+
+        <div class="controls">
+            <div>
+                <button id="btn-free" class="btn btn-free">Free Spin</button>
+                <span id="timer" class="timer-msg"></span>
             </div>
+            <button id="btn-paid" class="btn btn-paid">Spin for 50 ₼</button>
+        </div>
+
+        <div class="coupons-section">
+            <h2>Your Active Coupons</h2>
+            <div id="coupons-container"></div>
         </div>
     </div>
-    
-    <div id="footer-placeholder"></div>
-    
+
     <script src="navbar.js"></script>
-    <script src="footer.js"></script>
-    <script src="app-utils.js"></script>
-    
     <script>
-        const PRIZES = [
-            { id: 1, text: "5 ₼ Balans", value: 5, type: "cash", color: "#FFEB3B" },
-            { id: 2, text: "10% Promo", value: 0.10, type: "promo", color: "#F44336" },
-            { id: 3, text: "10 ₼ Balans", value: 10, type: "cash", color: "#4CAF50" },
-            { id: 4, text: "Uduş Yoxdur", value: 0, type: "none", color: "#2196F3" },
-            { id: 5, text: "20 ₼ Balans", value: 20, type: "cash", color: "#FF9800" },
-            { id: 6, text: "20% Promo", value: 0.20, type: "promo", color: "#9C27B0" },
-            { id: 7, text: "2 ₼ Balans", value: 2, type: "cash", color: "#00BCD4" },
-            { id: 8, text: "Uduş Yoxdur", value: 0, type: "none", color: "#795548" }
+        const canvas = document.getElementById('wheel');
+        const ctx = canvas.getContext('2d');
+        const btnFree = document.getElementById('btn-free');
+        const btnPaid = document.getElementById('btn-paid');
+        const timerMsg = document.getElementById('timer');
+        const couponsContainer = document.getElementById('coupons-container');
+        const balanceDisplay = document.getElementById('balance-display');
+
+        let userBalance = parseFloat(localStorage.getItem('userBalance')) || 1500;
+        
+        const prizes = [
+            { text: "10% OFF", color: "#FF6384", code: "SAVE10" },
+            { text: "No Luck", color: "#C9CBCF", code: null },
+            { text: "Free Ship", color: "#36A2EB", code: "FREESHIP" },
+            { text: "50 ₼", color: "#FFCE56", code: "MONEY50" },
+            { text: "Try Again", color: "#C9CBCF", code: null },
+            { text: "20% OFF", color: "#4BC0C0", code: "SAVE20" },
+            { text: "Jackpot", color: "#9966FF", code: "JACKPOT" },
+            { text: "5% OFF", color: "#FF9F40", code: "SAVE5" }
         ];
-        
-        const SPIN_COST = 5.0;
-        const SEGMENT_ANGLE = 360 / PRIZES.length;
-        const wheel = document.getElementById("wheel-svg");
-        const spinBtn = document.getElementById("spin-btn");
-        const freeSpinBtn = document.getElementById("free-spin-btn");
-        const balanceEl = document.getElementById("current-balance");
-        const resultEl = document.getElementById("result-message");
-        const promoDisplayEl = document.getElementById("promo-code-display");
-        
+
         let currentRotation = 0;
-        
-        function renderWheel() {
-            wheel.innerHTML = '';
-            PRIZES.forEach((prize, index) => {
-                const rotation = index * SEGMENT_ANGLE;
-                const pathId = `text-path-${index + 1}`;
+        let isSpinning = false;
+        const ONE_DAY_MS = 24 * 60 * 60 * 1000;
+
+        function updateBalanceUI() {
+            balanceDisplay.textContent = `Balance: ${userBalance} ₼`;
+            localStorage.setItem('userBalance', userBalance);
+        }
+
+        function drawWheel() {
+            const arc = (2 * Math.PI) / prizes.length;
+            const radius = canvas.width / 2;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.translate(radius, radius);
+
+            prizes.forEach((prize, i) => {
+                const angle = i * arc;
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.arc(0, 0, radius, angle, angle + arc);
+                ctx.fillStyle = prize.color;
+                ctx.fill();
+                ctx.stroke();
                 
-                const segment = document.createElementNS("http://www.w3.org/2000/svg", "path");
-                segment.setAttribute('d', `M 200 200 L 400 200 A 200 200 0 0 0 200 0 Z`);
-                segment.setAttribute('fill', prize.color);
-                segment.setAttribute('transform', `rotate(${rotation} 200 200)`);
-                wheel.appendChild(segment);
-                
-                const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-                text.setAttribute('x', '220');
-                text.setAttribute('y', '210');
-                text.setAttribute('fill', 'white');
-                text.setAttribute('transform', `rotate(${rotation + SEGMENT_ANGLE / 2} 200 200)`);
-                text.innerHTML = `<tspan>${prize.text}</tspan>`;
-                wheel.appendChild(text);
+                ctx.save();
+                ctx.rotate(angle + arc / 2);
+                ctx.textAlign = "right";
+                ctx.fillStyle = "#fff";
+                ctx.font = "bold 24px Arial";
+                ctx.shadowColor = "rgba(0,0,0,0.5)";
+                ctx.shadowBlur = 4;
+                ctx.fillText(prize.text, radius - 30, 10);
+                ctx.restore();
             });
-            
-            const centerCircle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
-            centerCircle.setAttribute('cx', '200');
-            centerCircle.setAttribute('cy', '200');
-            centerCircle.setAttribute('r', '50');
-            centerCircle.setAttribute('fill', 'white');
-            centerCircle.setAttribute('stroke', 'var(--accent-color)');
-            centerCircle.setAttribute('stroke-width', '5');
-            wheel.appendChild(centerCircle);
-            
-            const centerText = document.createElementNS("http://www.w3.org/2000/svg", "text");
-            centerText.setAttribute('x', '200');
-            centerText.setAttribute('y', '210');
-            centerText.setAttribute('text-anchor', 'middle');
-            centerText.setAttribute('font-weight', 'bold');
-            centerText.setAttribute('fill', 'var(--accent-color)');
-            centerText.innerHTML = 'Fırlat';
-            wheel.appendChild(centerText);
+            ctx.translate(-radius, -radius);
         }
-        
-        function loadUserData() {
-            const user = JSON.parse(localStorage.getItem("loggedInUser"));
-            if (!user) { window.location.href = "login.html"; return null; }
-            let balance = parseFloat(localStorage.getItem("userBalance")) || 0;
-            const freeSpinUsed = localStorage.getItem(`freeSpinUsed_${user.username}`) === 'true';
-            
-            balanceEl.textContent = balance.toFixed(2) + " ₼";
-            spinBtn.disabled = balance < SPIN_COST;
-            freeSpinBtn.disabled = freeSpinUsed;
-            
-            return { user, balance, freeSpinUsed };
-        }
-        
-        function updateBalance(amount, type) {
-            let balance = parseFloat(localStorage.getItem("userBalance")) || 0;
-            balance += amount;
-            localStorage.setItem("userBalance", balance);
-            balanceEl.textContent = balance.toFixed(2) + " ₼";
-            if (window.addTransaction) {
-                window.addTransaction(type, amount);
-            }
-        }
-        
-        function handlePrize(prize) {
-            resultEl.textContent = "";
-            promoDisplayEl.classList.add("hidden");
-            
-            if (prize.type === "cash") {
-                updateBalance(prize.value, "Uduş (Çarx)");
-                showNotification(`Təbriklər! Balansınıza ${prize.value.toFixed(2)} ₼ əlavə edildi.`, 'success');
-            } else if (prize.type === "promo") {
-                const code = generatePromoCode();
-                const user = JSON.parse(localStorage.getItem("loggedInUser"));
-                if (!user) return;
 
-                let promoCodes = JSON.parse(localStorage.getItem(`oneTimePromoCodes_${user.username}`)) || {};
-                promoCodes[code] = { discount: prize.value, used: false };
-                localStorage.setItem(`oneTimePromoCodes_${user.username}`, JSON.stringify(promoCodes));
+        function checkFreeSpin() {
+            const lastSpin = localStorage.getItem('lastFreeSpin');
+            const now = Date.now();
 
-                resultEl.textContent = `Təbriklər! ${prize.value * 100}% ENDİRİM qazandınız!`;
-                promoDisplayEl.textContent = `KODUNUZ: ${code}`;
-                promoDisplayEl.classList.remove("hidden");
-                showNotification(`Yeni promokod qazandınız: ${code}!`, 'success');
+            if (lastSpin && (now - lastSpin < ONE_DAY_MS)) {
+                btnFree.disabled = true;
+                const timeLeft = ONE_DAY_MS - (now - lastSpin);
+                const hours = Math.floor(timeLeft / (1000 * 60 * 60));
+                const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+                timerMsg.textContent = `Next free spin in: ${hours}h ${minutes}m`;
+                return false;
             } else {
-                resultEl.textContent = "Təəssüf, növbəti dəfə şansınızı sınayın.";
+                btnFree.disabled = false;
+                timerMsg.textContent = "Daily free spin available!";
+                return true;
             }
         }
-        
-        function spin(isFree) {
-            const userData = loadUserData();
-            if (!userData) return;
+
+        function saveCoupon(prize) {
+            if (!prize.code) return;
             
-            if (!isFree && userData.balance < SPIN_COST) {
-                showNotification("Balansınız fırlatmaq üçün yetərli deyil. Zəhmət olmasa balansı artırın.", 'error');
+            let myCoupons = JSON.parse(localStorage.getItem('myCoupons') || '[]');
+            myCoupons.push(prize);
+            localStorage.setItem('myCoupons', JSON.stringify(myCoupons));
+            renderCoupons();
+        }
+
+        function renderCoupons() {
+            const myCoupons = JSON.parse(localStorage.getItem('myCoupons') || '[]');
+            couponsContainer.innerHTML = '';
+
+            if (myCoupons.length === 0) {
+                couponsContainer.innerHTML = '<p style="color:#777;">No coupons yet. Start spinning!</p>';
                 return;
             }
-            
-            spinBtn.disabled = true;
-            freeSpinBtn.disabled = true;
-            resultEl.textContent = "Fırlanır...";
-            promoDisplayEl.classList.add("hidden");
-            
-            if (!isFree) {
-                updateBalance(-SPIN_COST, "Çarx xərci");
-            } else {
-                localStorage.setItem(`freeSpinUsed_${userData.user.username}`, 'true');
-            }
-            
-            const winningIndex = Math.floor(Math.random() * PRIZES.length);
-            const prize = PRIZES[winningIndex];
-            
-            const targetRotation = (360 * 5) + (360 - (winningIndex * SEGMENT_ANGLE + SEGMENT_ANGLE / 2));
-            
-            wheel.style.transition = 'transform 5s cubic-bezier(0.25, 0.1, 0.25, 1.0)';
-            wheel.style.transform = `rotate(${targetRotation}deg)`;
-            currentRotation = targetRotation;
-            
-            setTimeout(() => {
-                wheel.style.transition = 'none';
-                wheel.style.transform = `rotate(${targetRotation % 360}deg)`;
-                currentRotation = targetRotation % 360;
-                handlePrize(prize);
-                loadUserData();
-            }, 5000);
-        }
-        
-        document.addEventListener("DOMContentLoaded", function () {
-            renderWheel();
-            loadUserData();
-            
-            spinBtn.addEventListener("click", () => spin(false));
-            freeSpinBtn.addEventListener("click", () => {
-                const userData = loadUserData();
-                if (userData && !userData.freeSpinUsed) {
-                    spin(true);
-                }
+
+            myCoupons.forEach(c => {
+                const div = document.createElement('div');
+                div.className = 'coupon-card';
+                div.innerHTML = `
+                    <span class="coupon-text">${c.text}</span>
+                    <span class="coupon-code">${c.code}</span>
+                `;
+                couponsContainer.appendChild(div);
             });
-        });
+        }
+
+        function startSpin(type) {
+            if (isSpinning) return;
+
+            if (type === 'free') {
+                if (!checkFreeSpin()) return;
+                localStorage.setItem('lastFreeSpin', Date.now());
+                checkFreeSpin();
+            } else if (type === 'paid') {
+                if (userBalance < 50) {
+                    alert("Not enough balance!");
+                    return;
+                }
+                userBalance -= 50;
+                updateBalanceUI();
+            }
+
+            isSpinning = true;
+            btnFree.disabled = true;
+            btnPaid.disabled = true;
+
+            const extraSpins = 5;
+            const randomDegree = Math.floor(Math.random() * 360);
+            const totalRotation = (360 * extraSpins) + randomDegree;
+            
+            currentRotation += totalRotation;
+            canvas.style.transform = `rotate(-${currentRotation}deg)`;
+
+            setTimeout(() => {
+                isSpinning = false;
+                btnPaid.disabled = false;
+                checkFreeSpin();
+
+                const actualDeg = currentRotation % 360;
+                const arcSize = 360 / prizes.length;
+                const index = Math.floor(actualDeg / arcSize);
+                
+                const winningIndex = (prizes.length - 1) - index;
+                const winner = prizes[winningIndex >= 0 ? winningIndex : 0];
+
+                if (winner.code) {
+                    saveCoupon(winner);
+                    alert(`You won: ${winner.text}`);
+                } else {
+                    alert(`Result: ${winner.text}`);
+                }
+
+            }, 4000);
+        }
+
+        btnFree.addEventListener('click', () => startSpin('free'));
+        btnPaid.addEventListener('click', () => startSpin('paid'));
+
+        drawWheel();
+        updateBalanceUI();
+        checkFreeSpin();
+        renderCoupons();
+        
+        setInterval(checkFreeSpin, 60000);
+
     </script>
 </body>
 </html>
