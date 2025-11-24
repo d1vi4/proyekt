@@ -396,9 +396,14 @@
 
           let isSpinning = false;
           let user = JSON.parse(localStorage.getItem("loggedInUser"));
+          const USER_BALANCE_KEY = user ? ("userBalance_" + user.username) : null;
 
           function updateBalanceDisplay() {
-              const bal = parseFloat(localStorage.getItem("userBalance")) || 0;
+              if(!USER_BALANCE_KEY) {
+                   balanceEl.textContent = `Balance: 0.00 ₼`;
+                   return;
+              }
+              const bal = parseFloat(localStorage.getItem(USER_BALANCE_KEY)) || 0;
               balanceEl.textContent = `Balance: ${bal.toFixed(2)} ₼`;
           }
 
@@ -502,9 +507,10 @@
 
           function processWin(winner) {
               if (winner.type === "cash") {
-                  let bal = parseFloat(localStorage.getItem("userBalance")) || 0;
+                  if(!USER_BALANCE_KEY) return;
+                  let bal = parseFloat(localStorage.getItem(USER_BALANCE_KEY)) || 0;
                   bal += winner.val;
-                  localStorage.setItem("userBalance", bal);
+                  localStorage.setItem(USER_BALANCE_KEY, bal);
                   updateBalanceDisplay();
                   showWinModal(winner);
               } 
@@ -513,7 +519,7 @@
                   let codes = JSON.parse(localStorage.getItem(`oneTimePromoCodes_${user.username}`)) || {};
                   
    
-                  let discountVal = winner.val || 0; // 0 for free ship (logic handled in checkout)
+                  let discountVal = winner.val || 0; 
                   if(winner.type === "shipping") discountVal = "freeship";
 
                   codes[newCode] = { discount: discountVal, used: false, type: winner.type };
@@ -526,52 +532,6 @@
               }
           }
 
-          function spinWheel(type) {
-              if (isSpinning) return;
-              if (!user) { window.location.href = "login.html"; return; }
-
-              if (type === 'paid') {
-                  let bal = parseFloat(localStorage.getItem("userBalance")) || 0;
-                  if (bal < 50) {
-                      alert("Insufficient balance! You need 50 ₼.");
-                      return;
-                  }
-                  if(!confirm("Spend 50 ₼ for a spin?")) return;
-                  bal -= 50;
-                  localStorage.setItem("userBalance", bal);
-                  updateBalanceDisplay();
-              } else {
-                   localStorage.setItem(`lastFreeSpin_${user.username}`, Date.now());
-              }
-
-              isSpinning = true;
-              btnFree.disabled = true;
-              btnPaid.disabled = true;
-              const winnerIndex = Math.floor(Math.random() * prizes.length);
-              const sliceAngle = 360 / prizes.length;
-              
-              const randomOffset = Math.floor(Math.random() * (sliceAngle - 2)) + 1; 
-              
-              const baseRotation = winnerIndex * sliceAngle;
-              const centerOffset = sliceAngle / 2;
-              const variation = (Math.random() - 0.5) * (sliceAngle * 0.8);
-
-              const targetRotation = (360 * 5) + baseRotation + centerOffset + variation;
-              
-              canvas.style.transform = `rotate(-${targetRotation}deg)`;
-
-              setTimeout(() => {
-                  isSpinning = false;
-                  btnPaid.disabled = false;
-                  checkFreeSpinEligibility();
-                  
-                  const winner = prizes[winnerIndex];
-                  processWin(winner);
-                  
-              }, 4000);
-              
-          }
-          
           let currentDeg = 0;
           
           function spinWheelAdditive(type) {
@@ -579,13 +539,14 @@
               if (!user) { window.location.href = "login.html"; return; }
 
               if (type === 'paid') {
-                  let bal = parseFloat(localStorage.getItem("userBalance")) || 0;
+                  if(!USER_BALANCE_KEY) return;
+                  let bal = parseFloat(localStorage.getItem(USER_BALANCE_KEY)) || 0;
                   if (bal < 50) {
                       alert("Insufficient balance!");
                       return;
                   }
                   bal -= 50;
-                  localStorage.setItem("userBalance", bal);
+                  localStorage.setItem(USER_BALANCE_KEY, bal);
                   updateBalanceDisplay();
               } else {
                    localStorage.setItem(`lastFreeSpin_${user.username}`, Date.now());
@@ -601,14 +562,9 @@
               const targetAngle = winnerIndex * sliceAngle + (sliceAngle / 2);
               const variation = (Math.random() - 0.5) * (sliceAngle * 0.8);
               
-    
               const currentMod = currentDeg % 360;
-              
-
-              
               const extraSpins = 360 * 5;
 
-              
               const nextRotation = currentDeg + extraSpins + (360 - currentMod) + targetAngle + variation;
               
               currentDeg += extraSpins + Math.random() * 360;

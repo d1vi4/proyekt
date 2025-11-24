@@ -58,11 +58,20 @@
   <script>
     document.addEventListener("DOMContentLoaded", function() {
 
-        let balance = parseFloat(localStorage.getItem("userBalance")) || 0;
+        const user = JSON.parse(localStorage.getItem("loggedInUser"));
+        if (!user) {
+            window.location.href = "login.html";
+            return;
+        }
+        
+        const USER_BALANCE_KEY = "userBalance_" + user.username;
+        const USER_TRANSACTIONS_KEY = "transactions_" + user.username;
+
+        let balance = parseFloat(localStorage.getItem(USER_BALANCE_KEY)) || 0;
         document.getElementById("current-balance-display").innerText = balance.toFixed(2) + " ₼";
 
         function addTransaction(type, amount) {
-            const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            const transactions = JSON.parse(localStorage.getItem(USER_TRANSACTIONS_KEY)) || [];
             const newTx = {
                 id: Date.now(),
                 type: type,
@@ -70,7 +79,7 @@
                 date: new Date().toLocaleString('az-AZ')
             };
             transactions.unshift(newTx);
-            localStorage.setItem('transactions', JSON.stringify(transactions));
+            localStorage.setItem(USER_TRANSACTIONS_KEY, JSON.stringify(transactions));
         }
 
         document.getElementById("topup-form").addEventListener("submit", function(e) {
@@ -79,10 +88,10 @@
             const amount = parseFloat(document.getElementById("amount-input").value);
             
             if (amount > 0) {
-                let currentBalance = parseFloat(localStorage.getItem("userBalance")) || 0;
+                let currentBalance = parseFloat(localStorage.getItem(USER_BALANCE_KEY)) || 0;
                 let newBalance = currentBalance + amount;
                 
-                localStorage.setItem("userBalance", newBalance);
+                localStorage.setItem(USER_BALANCE_KEY, newBalance);
                 addTransaction("Deposit (Card)", amount);
                 
                 alert(`Successfully added ${amount} ₼! New balance: ${newBalance.toFixed(2)} ₼`);

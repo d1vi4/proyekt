@@ -40,7 +40,16 @@
         document.addEventListener('DOMContentLoaded', function() {
             const txBody = document.getElementById('transaction-body');
             const noTx = document.getElementById('no-transactions');
-            const transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+            
+            const user = JSON.parse(localStorage.getItem("loggedInUser"));
+            if (!user) {
+                noTx.classList.remove('hidden');
+                return;
+            }
+            
+            const USER_TRANSACTIONS_KEY = 'transactions_' + user.username;
+            
+            const transactions = JSON.parse(localStorage.getItem(USER_TRANSACTIONS_KEY)) || [];
 
             if (transactions.length === 0) {
                 noTx.classList.remove('hidden');
@@ -52,10 +61,12 @@
                     const sign = isPositive ? '+' : '';
 
                     let icon = '';
-                    if (tx.type === 'Deposit') icon = '<i class="fas fa-arrow-down text-blue-500 mr-2"></i>';
-                    else if (tx.type === 'Withdraw') icon = '<i class="fas fa-arrow-up text-orange-500 mr-2"></i>';
-                    else if (tx.type === 'Purchase') icon = '<i class="fas fa-shopping-bag text-gray-500 mr-2"></i>';
-                    else if (tx.type === 'Cashback') icon = '<i class="fas fa-gift text-purple-500 mr-2"></i>';
+                    if (tx.type === 'Deposit (Card)') icon = '<i class="fas fa-arrow-down text-blue-500 mr-2"></i>';
+                    else if (tx.type === 'Alış') icon = '<i class="fas fa-shopping-bag text-gray-500 mr-2"></i>';
+                    else if (tx.type === 'Kəşbək') icon = '<i class="fas fa-gift text-purple-500 mr-2"></i>';
+                    else if (tx.type === 'Deposit') icon = '<i class="fas fa-arrow-down text-blue-500 mr-2"></i>'; // Fallback
+                    else if (tx.type === 'Withdraw') icon = '<i class="fas fa-arrow-up text-orange-500 mr-2"></i>'; // Fallback
+                    else if (tx.type === 'Purchase') icon = '<i class="fas fa-shopping-bag text-gray-500 mr-2"></i>'; // Fallback
 
                     row.innerHTML = `
                         <td class="px-6 py-4 text-sm text-gray-700 whitespace-nowrap">${tx.date}</td>

@@ -64,7 +64,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   
     let user = JSON.parse(localStorage.getItem("loggedInUser"));
-    let balance = parseFloat(localStorage.getItem("userBalance")) || 0;
+    let balance = user ? (parseFloat(localStorage.getItem("userBalance_" + user.username)) || 0) : 0;
 
     if (user) {
       document.getElementById("user-section").innerHTML = `
