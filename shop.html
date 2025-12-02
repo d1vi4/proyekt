@@ -124,7 +124,7 @@
       });
 
       function loadCategories() {
-        return fetch("http://195.26.245.5:9505/api/categories")
+        return fetch("http://localhost:8081/api/categories")
           .then((resp) => resp.json())
           .then((data) => { apiCategories = data; });
       }
@@ -137,7 +137,7 @@
         if (selectedCategory !== "all") params.append("categoryId", selectedCategory);
         if (selectedRate !== "all") params.append("rating", selectedRate);
         if (sortOption) params.append("sortBy", sortOption);
-        return `http://195.26.245.5:9505/api/products/filter?${params.toString()}`;
+        return `http://localhost:8081/api/products/filter?${params.toString()}`;
       }
 
       function loadProducts() {
@@ -254,7 +254,7 @@
           const comment = document.getElementById("review-comment").value;
           const rating = parseInt(document.getElementById("review-rating").value);
 
-          fetch("http://195.26.245.5:9505/api/ratings", {
+          fetch("http://localhost:8081/api/ratings", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -262,7 +262,7 @@
             },
             body: JSON.stringify({ productId: product.id, rating })
           })
-            .then(() => fetch("http://195.26.245.5:9505/api/reviews", {
+            .then(() => fetch("http://localhost:8081/api/reviews", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -276,7 +276,7 @@
       }
 
       function loadReviews(productId) {
-        fetch(`http://195.26.245.5:9505/api/reviews/product/${productId}?page=0&size=10`)
+        fetch(`http://localhost:8081/api/reviews/product/${productId}?page=0&size=10`)
           .then((r) => r.json())
           .then((data) => {
             const reviewsList = document.getElementById("reviews-list");
@@ -313,7 +313,7 @@
       loadCategories().then(loadProducts);
       async function updateAverageRating(productId) {
         try {
-          const response = await fetch(`http://195.26.245.5:9505/api/products/${productId}`, {
+          const response = await fetch(`http://localhost:8081/api/products/${productId}`, {
             headers: { "Authorization": "Bearer " + token }
           });
           const data = await response.json();

@@ -191,7 +191,7 @@
       let isEditMode = false;
 
       function loadCategories() {
-        fetch("http://195.26.245.5:9505/api/categories")
+        fetch("http://localhost:8081/api/categories")
           .then((resp) => {
             if (!resp.ok) {
               throw new Error("Failed to load categories");
@@ -326,7 +326,7 @@
             methodType = "PUT";
           }
 
-          fetch("http://195.26.245.5:9505/api/products", {
+          fetch("http://localhost:8081/api/products", {
             method: methodType,
             headers: {
               "Content-Type": "application/json",

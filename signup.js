@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const user = { name, surname, email, username, password };
 
-      fetch("http://195.26.245.5:9505/api/clients", {
+      fetch("http://localhost:8081/api/clients", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(user),

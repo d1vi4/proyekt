@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const username = usernameField.value.trim();
       const password = passwordField.value;
 
-      fetch("http://195.26.245.5:9505/api/auth", {
+      fetch("http://localhost:8081/api/auth", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (result.status >= 200 && result.status < 300) {
             const token = result.data.body.token;
 
-            fetch("http://195.26.245.5:9505/api/clients/get-details", {
+            fetch("http://localhost:8081/api/clients/get-details", {
               method: "GET",
               headers: {
                 "Content-Type": "application/json",

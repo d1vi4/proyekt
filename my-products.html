@@ -150,7 +150,7 @@
       let categories = [];
 
       function loadCategories() {
-        return fetch("http://195.26.245.5:9505/api/categories")
+        return fetch("http://localhost:8081/api/categories")
           .then((resp) => {
             if (!resp.ok) {
               throw new Error("Failed to fetch categories");
@@ -220,7 +220,7 @@
         });
 
         function loadProducts() {
-          const url = `http://195.26.245.5:9505/api/products/myProducts?page=${
+          const url = `http://localhost:8081/api/products/myProducts?page=${
             currentPage - 1
           }&size=${entriesPerPage}`;
           fetch(url, {
@@ -344,7 +344,7 @@
 
         function deleteProduct(prodId) {
           if (!confirm("Are you sure you want to delete this product?")) return;
-          fetch(`http://195.26.245.5:9505/api/products/delete/${prodId}`, {
+          fetch(`http://localhost:8081/api/products/delete/${prodId}`, {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
