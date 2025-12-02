@@ -1,5 +1,175 @@
-<script>
-  const PROMO_CODES = {
+<!DOCTYPE html>
+<html lang="az">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Checkout - E-commerce</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Poppins:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --primary-color: #6366f1;
+        --accent-color: #ef4444;
+        --text-dark: #111827;
+        --text-body: #374151;
+      }
+      body {
+        font-family: 'Inter', sans-serif;
+        color: var(--text-body);
+        background-color: #f9fafb;
+      }
+      h4, h5 {
+        font-family: 'Poppins', sans-serif;
+        color: var(--text-dark);
+      }
+      .notification-container {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        z-index: 1050;
+      }
+      .scale-0 {
+        transform: scale(0);
+      }
+      .scale-100 {
+        transform: scale(1);
+      }
+      .checkout-btn {
+        background-color: var(--accent-color);
+      }
+      .checkout-btn:hover {
+        background-color: #c93b3b;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-50 flex flex-col min-h-screen">
+    <div id="navbar-placeholder"></div>
+
+    <div class="container mx-auto px-4 py-12 max-w-7xl flex-grow">
+      <div class="flex flex-col lg:flex-row gap-8">
+        <div class="w-full lg:w-7/12">
+          <div class="bg-white border border-gray-100 rounded-2xl p-8 shadow-lg">
+            <h4 class="text-2xl font-bold mb-6 border-b pb-4">Çatdırılma Məlumatı</h4>
+            <form id="shipping-form" class="space-y-5" novalidate>
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <div class="space-y-2">
+                  <label for="firstName" class="block text-sm font-medium text-gray-700">Ad</label>
+                  <input type="text" id="firstName" placeholder="Əli" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
+                </div>
+                <div class="space-y-2">
+                  <label for="lastName" class="block text-sm font-medium text-gray-700">Soyad</label>
+                  <input type="text" id="lastName" placeholder="Əliyev" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <label for="city" class="block text-sm font-medium text-gray-700">Şəhər</label>
+                <input type="text" id="city" placeholder="Bakı" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
+              </div>
+
+              <div class="space-y-2">
+                <label for="address" class="block text-sm font-medium text-gray-700">Ünvan</label>
+                <input type="text" id="address" placeholder="Küçə, Ev/Mənzil" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
+              </div>
+
+              <div class="space-y-2">
+                <label for="phone" class="block text-sm font-medium text-gray-700">Telefon</label>
+                <input type="tel" id="phone" placeholder="+994 xx xxx xx xx" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500" required />
+              </div>
+
+              <div class="flex items-start pt-2">
+                <div class="flex items-center h-5">
+                  <input type="checkbox" id="termsCheck" class="w-4 h-4 text-indigo-600 border-gray-300 rounded focus:ring-indigo-500 cursor-pointer" required />
+                </div>
+                <div class="ml-3 text-sm">
+                  <label for="termsCheck" class="font-medium text-gray-700 cursor-pointer">Şərtlərlə və qaydalarla razıyam</label>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <div class="w-full lg:w-5/12 space-y-6">
+          <div class="bg-white border border-gray-100 rounded-2xl p-8 shadow-lg">
+            <h5 class="text-xl font-bold mb-4 text-gray-800">Sifariş Xülasəsi</h5>
+            
+            <div class="mb-4 p-3 bg-gray-50 rounded border border-gray-200">
+                <p class="text-sm text-gray-500">Balansınız:</p>
+                <p class="text-lg font-bold text-indigo-600" id="user-balance-display">0.00 ₼</p>
+            </div>
+
+            <div class="space-y-3 text-gray-600">
+              <div class="flex justify-between">
+                <span>Yekun məbləğ</span>
+                <span id="subtotal" class="font-medium text-gray-900">0 ₼</span>
+              </div>
+              
+              <div class="flex flex-col space-y-2 py-2 border-t border-b border-gray-100">
+                <label class="text-sm font-semibold">Promokod</label>
+                <div class="flex space-x-2">
+                    <input type="text" id="promo-code-input" placeholder="Kodu daxil edin" class="border border-gray-300 rounded px-3 py-2 w-full focus:outline-none focus:border-indigo-500 uppercase">
+                    <button id="apply-promo-btn" class="bg-gray-800 text-white px-4 py-2 rounded hover:bg-gray-700 transition">Tətbiq et</button>
+                </div>
+                <p id="promo-message" class="text-xs font-medium min-h-[1.25rem]"></p>
+              </div>
+
+              <div class="flex justify-between hidden" id="discount-row">
+                <span class="text-red-600">Endirim</span>
+                <span id="discount-amount" class="font-medium text-red-600">0.00 ₼</span>
+              </div>
+
+              <div class="flex justify-between">
+                <span>Çatdırılma</span>
+                <span class="text-green-600 font-medium">Pulsuz</span>
+              </div>
+              <hr class="my-3 border-gray-200" />
+              <div class="flex justify-between font-bold text-lg text-gray-900">
+                <span>Cəmi</span>
+                <span id="total">0 ₼</span>
+              </div>
+            </div>
+            <button
+              id="placeOrderBtn"
+              class="w-full checkout-btn text-white py-3 px-6 rounded-lg font-bold shadow-md hover:shadow-lg transition duration-300 mt-6 flex justify-center items-center"
+            >
+              Balansla Ödə <i class="fas fa-wallet ml-2"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex justify-center items-center z-50">
+        <div class="bg-white rounded-2xl p-8 max-w-md w-full text-center shadow-2xl transform scale-100 transition-transform">
+            <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <i class="fas fa-check text-4xl text-green-600"></i>
+            </div>
+            <h3 class="text-2xl font-bold text-gray-900 mb-2">Sifariş Uğurlu Oldu!</h3>
+            <p class="text-gray-600 mb-4">Alış-verişiniz üçün təşəkkür edirik.</p>
+            
+            <div class="bg-gray-100 p-4 rounded-lg mb-6 border border-gray-200">
+                <p class="text-xs text-gray-500 uppercase tracking-wide">Sizin Sifariş ID-niz</p>
+                <p class="text-3xl font-mono font-bold text-indigo-600 mt-1" id="modal-order-id">ORD-XXXX</p>
+                <p class="text-xs text-gray-400 mt-1">Sifarişi izləmək üçün bu ID-ni yadda saxlayın!</p>
+            </div>
+            
+            <div id="cashback-message" class="text-lg font-bold text-green-600 mb-4 hidden"></div>
+
+            <button onclick="window.location.href='tracking.html'" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 rounded-lg font-bold transition mb-2">
+                Sifarişi İzlə
+            </button>
+            <button onclick="window.location.href='index.html'" class="w-full text-gray-500 hover:text-gray-700 py-2 text-sm">
+                Ana Səhifəyə Qayıt
+            </button>
+        </div>
+    </div>
+
+    <script>
+     const PROMO_CODES = {
     "ELXANCOOL": 0.50, "ECOMMERCE": 0.10, "DEC15%": 0.15, "SKIDKA": 0.20, "ENDIRIM10": 0.10
   };
   const MAX_USAGE = 3;
@@ -133,4 +303,8 @@
         }
     });
   });
-</script>
+    </script>
+    <script src="navbar.js"></script>
+    <script src="footer.js"></script>
+  </body>
+</html>
